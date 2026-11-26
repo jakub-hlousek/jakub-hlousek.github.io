@@ -51,7 +51,9 @@ p{margin:0}
 .nav{display:flex;justify-content:space-between;align-items:center;gap:12px 16px;padding-top:14px;padding-bottom:14px}
 .brand{display:inline-flex;align-items:center;gap:10px;color:var(--ink);font-weight:700;font-size:15px;text-decoration:none;white-space:nowrap}
 .brand:hover{color:var(--ink)}
-.brand i{width:10px;height:10px;border-radius:50%;background:var(--blue)}
+.logo{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:2px solid var(--ink);border-radius:8px;background:#fff;font-weight:800;font-variation-settings:'wdth' 100;font-size:15px;letter-spacing:-.05em;line-height:1;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.logo span:first-child{color:var(--ink)}.logo span:last-child{color:var(--blue)}
+.brand:hover .logo{transform:rotate(-6deg)}
 .nav ul{display:flex;gap:2px;list-style:none;margin:0;padding:4px;background:var(--panel);border-radius:999px}
 .nav ul a{display:block;padding:8px 14px;border-radius:999px;color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap;transition:background-color .15s,color .15s}
 .nav ul a:hover{background:#fff;color:var(--ink)}
@@ -352,7 +354,7 @@ html.lenis,html.lenis body{height:auto}
 <div class="rail rail-r" aria-hidden="true"><span><b>Jakub Hloušek</b><em style="font-style:normal" class="rail-sec">Úvod</em></span></div>
 <header class="topbar">
 <div class="wrap nav">
-  <a class="brand" href="#top"><i aria-hidden="true"></i>Jakub Hloušek</a>
+  <a class="brand" href="#top"><span class="logo" aria-hidden="true"><span>J</span><span>H</span></span>Jakub Hloušek</a>
   <nav aria-label="Hlavní navigace">
     <ul>
       <li><a href="#video">Video</a></li>
