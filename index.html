@@ -13,166 +13,383 @@
 <link rel="icon" href="images/apple-touch-icon.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&amp;family=Source+Sans+3:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&display=swap" rel="stylesheet">
 <style>
-body{margin:0;background:#FFFFFF}
-a{color:#0F4C75}a:hover{color:#0A3350}
-.vthumb{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#17191C;color:#FFFFFF;text-decoration:none;isolation:isolate}
-.vthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(3px) brightness(.55);transform:scale(1.08);transition:filter .25s ease,transform .25s ease;z-index:-1}
-.vthumb:hover img,.vthumb:focus-visible img{filter:blur(0) brightness(.7);transform:scale(1.02)}
-.vthumb span{font-family:'Bricolage Grotesque',sans-serif;font-size:1.3rem;font-weight:700;text-align:center;padding:0 1rem;text-shadow:0 1px 8px rgba(0,0,0,.6)}
-.vgrid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);grid-template-rows:repeat(2,minmax(0,1fr));gap:.5rem;aspect-ratio:16/9}
-.vgrid .vthumb{aspect-ratio:auto}.vgrid .vthumb:first-child{grid-row:1 / 3}
-.vthumb.small{gap:.4rem}.vthumb.small span{font-size:.95rem}
-.vthumb svg{filter:drop-shadow(0 1px 6px rgba(0,0,0,.5))}
+:root{
+  --paper:#FFFFFF;
+  --panel:#EEEFEA;
+  --ink:#000000;
+  --text:#262626;
+  --muted:#5E5E5B;
+  --line:#D6D7D1;
+  --blue:#2433D6;
+  --blue-dark:#16219E;
+  --wrap:1240px;
+  --gut:clamp(20px,4vw,48px);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--text);font-family:'Archivo',system-ui,sans-serif;font-variation-settings:'wdth' 100;font-size:17px;line-height:1.6}
+img{display:block;max-width:100%}
+a{color:var(--blue);text-underline-offset:.2em;text-decoration-thickness:1px}
+a:hover{color:var(--blue-dark)}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
+h1,h2,h3{color:var(--ink);margin:0;font-weight:700;line-height:1.05}
+h2{font-size:clamp(40px,6.4vw,84px);font-variation-settings:'wdth' 125;font-weight:800;letter-spacing:-.025em}
+h3{font-size:clamp(22px,2.2vw,28px);font-variation-settings:'wdth' 110;letter-spacing:-.01em;line-height:1.2}
+p{margin:0}
+.muted{color:var(--muted)}
+.small{font-size:15px}
 
+/* navigace */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:24px;padding-bottom:24px;font-size:15px}
+.nav b{color:var(--ink);font-weight:700}
+.nav ul{display:flex;gap:clamp(14px,3vw,32px);list-style:none;margin:0;padding:0}
+.nav a{color:var(--ink);text-decoration:none}
+.nav a:hover{color:var(--blue)}
+
+/* úvod */
+.hero{padding-top:clamp(24px,6vw,72px);padding-bottom:clamp(56px,9vw,120px)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 clamp(20px,4vw,56px);align-items:end}
+.name{font-size:min(13vw,180px);font-weight:800;font-variation-settings:'wdth' 112;letter-spacing:-.045em;line-height:.84;color:var(--ink)}
+.name span{display:block}
+.name span+span{color:var(--blue)}
+.portrait{width:clamp(120px,19vw,250px);aspect-ratio:3/4;object-fit:cover;border-radius:4px;filter:grayscale(1) contrast(1.05)}
+.intro{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px 48px;align-items:end;margin-top:clamp(32px,5vw,56px);padding-top:24px;border-top:2px solid var(--ink)}
+.intro p{font-size:clamp(19px,2vw,24px);line-height:1.4;max-width:34ch;color:var(--ink)}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;font-weight:600;text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:transparent;transition:background-color .15s,color .15s}
+.btn:hover{background:var(--ink);color:#fff}
+.btn.solid{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.solid:hover{background:var(--blue-dark);border-color:var(--blue-dark)}
+
+/* sekce */
+.section{padding-top:clamp(64px,9vw,128px)}
+.section-head{display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap;padding-bottom:clamp(28px,4vw,48px)}
+.section-head p{max-width:36ch}
+.project{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:28px clamp(20px,3vw,40px);padding-top:32px;padding-bottom:clamp(48px,6vw,80px);border-top:1px solid var(--line)}
+.project:first-of-type{border-top:0;padding-top:0}
+.media{grid-column:1 / span 8}
+.copy{grid-column:9 / span 4;display:flex;flex-direction:column;gap:14px}
+.project.flip .media{grid-column:5 / span 8;grid-row:1}
+.project.flip .copy{grid-column:1 / span 4;grid-row:1}
+.client{font-size:15px;color:var(--muted)}
+.facts{list-style:none;margin:6px 0 0;padding:0;border-top:1px solid var(--line)}
+.facts li{padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.facts strong{color:var(--ink)}
+.tools{font-size:15px;color:var(--muted)}
+
+/* video náhledy */
+.vthumb{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;aspect-ratio:16/9;border-radius:4px;overflow:hidden;background:#1A1A1A;color:#fff;text-decoration:none;isolation:isolate}
+.vthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(4px) brightness(.5);transform:scale(1.08);transition:filter .3s ease,transform .3s ease;z-index:-1}
+.vthumb:hover img,.vthumb:focus-visible img{filter:blur(0) brightness(.62);transform:scale(1.02)}
+.vthumb:hover,.vthumb:focus-visible{color:#fff}
+.vthumb .play{width:72px;height:72px;border-radius:50%;background:var(--blue);display:grid;place-items:center}
+.vthumb .label{font-weight:700;font-variation-settings:'wdth' 115;font-size:clamp(18px,2vw,24px);text-align:center;padding:0 16px}
+.vgrid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);grid-template-rows:repeat(2,minmax(0,1fr));gap:8px;aspect-ratio:16/9}
+.vgrid .vthumb{aspect-ratio:auto}
+.vgrid .vthumb:first-child{grid-row:1 / 3}
+.vgrid .vthumb:not(:first-child) .play{width:44px;height:44px}
+.vgrid .vthumb:not(:first-child) .label{font-size:15px}
+
+/* grafika */
+.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.gallery figure{margin:0}
+.gallery .frame{background:var(--panel);border-radius:4px;overflow:hidden;display:grid;place-items:center}
+.gallery .tall{aspect-ratio:3/4}
+.gallery .wide{aspect-ratio:16/10}
+.gallery .contain img{width:82%;height:auto;max-height:88%;object-fit:contain;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.gallery .cover img{width:100%;height:100%;object-fit:cover}
+figcaption{font-size:14px;color:var(--muted);padding-top:8px}
+.poster{background:var(--panel);border-radius:4px;display:grid;place-items:center;padding:clamp(24px,5vw,64px)}
+.poster img{width:min(100%,420px);height:auto;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+
+/* rozpracováno */
+.status{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:5px 12px;border-radius:999px;background:var(--panel);color:var(--ink);font-size:14px;font-weight:600}
+.status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--blue)}
+.concept-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px;margin-top:12px}
+.concept-grid figure{margin:0}
+.concept-grid img{width:100%;height:auto;border-radius:4px}
+.cg-social{grid-column:1 / span 7}
+.cg-brand{grid-column:8 / span 5;display:flex;flex-direction:column;gap:12px}
+.cg-jersey{grid-column:1 / -1}
+.cg-jersey img{background:#EEF1EF}
+.cg-brand img{border:1px solid var(--line)}
+@media (max-width:860px){.cg-social,.cg-brand{grid-column:1 / -1}}
+
+/* web a psaní */
+.writing{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:40px clamp(20px,3vw,40px)}
+.writing > div{grid-column:span 6;display:flex;flex-direction:column;gap:12px}
+.links{list-style:none;margin:8px 0 0;padding:0;border-top:2px solid var(--ink)}
+.links li{border-bottom:1px solid var(--line)}
+.links a{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;color:var(--ink);text-decoration:none;font-weight:600;line-height:1.35}
+.links a span{font-weight:400;font-size:14px;color:var(--muted);white-space:nowrap}
+.links a:hover{color:var(--blue)}
+
+/* o mně + kontakt */
+.about{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px clamp(20px,3vw,40px)}
+.about h2{grid-column:span 5}
+.about div{grid-column:7 / span 6;display:flex;flex-direction:column;gap:16px;font-size:19px;line-height:1.55}
+.contact{margin-top:clamp(80px,10vw,140px);background:var(--blue);color:#fff}
+.contact .wrap{padding-top:clamp(56px,8vw,96px);padding-bottom:clamp(40px,5vw,56px)}
+.contact p{font-size:18px;max-width:30ch}
+.mail{display:inline-block;margin-top:16px;color:#fff;font-weight:800;font-variation-settings:'wdth' 125;letter-spacing:-.03em;font-size:clamp(28px,6vw,80px);line-height:1;text-decoration:none;word-break:break-word}
+.mail:hover{color:#fff;text-decoration:underline;text-decoration-thickness:3px}
+.contact-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;margin-top:clamp(48px,7vw,88px);padding-top:20px;border-top:1px solid rgba(255,255,255,.4);font-size:15px}
+.contact-row a{color:#fff}
+.contact-row ul{display:flex;flex-wrap:wrap;gap:24px;list-style:none;margin:0;padding:0}
+
+@media (max-width:860px){
+  .media,.copy,.project.flip .media,.project.flip .copy{grid-column:1 / -1;grid-row:auto}
+  .writing > div,.about h2,.about div{grid-column:1 / -1}
+  .intro{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .nav ul{display:none}
+  .hero-grid{grid-template-columns:1fr}
+  .portrait{width:132px;margin-top:24px;order:-1}
+  .name{font-size:17vw}
+  .gallery{grid-template-columns:1fr 1fr;gap:8px}
+  .links a{flex-direction:column;gap:2px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<div style="width: 100%; min-height: 100%; background: #FFFFFF; font-family: 'Source Sans 3', sans-serif; color: #17191C; font-size: 1.05rem; line-height: 1.55">
 
-  <header style="background: #EEF1F4">
-    <div style="max-width: 1120px; margin: 0 auto; padding: 5rem 1.5rem 4rem; display: flex; flex-wrap: wrap; align-items: center; gap: 3rem">
-      <div style="flex: 999 1 480px; min-width: 0">
-        <div style="font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.85rem; color: #0F4C75">Portfolio</div>
-        <h1 style="margin: 0.5rem 0 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: clamp(2.6rem, 6vw, 4.4rem); line-height: 1.02; letter-spacing: -0.02em">Jakub Hloušek</h1>
-        <p style="margin: 1.25rem 0 0; font-size: 1.3rem; max-width: 36rem; color: #2E3238">Digitální specialista ČZU Farmers Prague. Stříhám videa, navrhuji grafiku pro tisk i sítě, spravuji web a píšu články.</p>
-        <div style="margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.75rem">
-          <a href="mailto:tohlejekuba@gmail.com" style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.4rem; border-radius: 999px; background: #0F4C75; color: #FFFFFF; font-weight: 700; text-decoration: none">Napište mi</a>
-          <a href="jakub-hlousek-cv.pdf" download style="display: inline-flex; align-items: center; min-height: 48px; padding: 0 1.4rem; border-radius: 999px; border: 2px solid #0F4C75; color: #0F4C75; font-weight: 700; text-decoration: none">Stáhnout CV (PDF)</a>
-        </div>
-      </div>
-      <img src="images/jakub-hlousek.jpg" alt="Jakub Hloušek" style="flex: 0 1 240px; width: 240px; max-width: 100%; height: 320px; object-fit: cover; border-radius: 12px; display: block">
+<header class="wrap nav">
+  <b>Jakub Hloušek</b>
+  <nav aria-label="Hlavní navigace">
+    <ul>
+      <li><a href="#video">Video</a></li>
+      <li><a href="#grafika">Grafika</a></li>
+      <li><a href="#rozpracovano">Rozpracováno</a></li>
+      <li><a href="#psani">Web a psaní</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="wrap hero">
+    <div class="hero-grid">
+      <h1 class="name"><span>Jakub</span><span>Hloušek</span></h1>
+      <img class="portrait" src="images/jakub-hlousek.jpg" alt="Jakub Hloušek">
     </div>
-  </header>
-
-  <main style="max-width: 1120px; margin: 0 auto; padding: 4.5rem 1.5rem 1rem; display: flex; flex-direction: column; gap: 5rem">
-
-    <section style="display: flex; flex-direction: column; gap: 2rem">
-      <h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 2.2rem; letter-spacing: -0.01em">Video</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 2.5rem 2rem">
-
-        <article style="display: flex; flex-direction: column; gap: 0.75rem">
-          <a class="vthumb" href="https://youtu.be/9B_mhXxW6RM" aria-label="Přehrát na YouTube: Season Opener 2026"><img src="https://i.ytimg.com/vi/9B_mhXxW6RM/hqdefault.jpg" alt="" loading="lazy"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" stroke="#FFFFFF" stroke-width="2.5" aria-hidden="true"><circle cx="32" cy="32" r="29"></circle><path d="M26 21 L45 32 L26 43 Z" fill="#FFFFFF"></path></svg><span>Season Opener 2026</span></a>
-          <div style="font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #0F4C75">Spot · ČZU Farmers Prague</div>
-          <h3 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.4rem">30sekundový spot na první zápas sezony</h3>
-          <p style="margin: 0; color: #2E3238">Pozvánka na Season Opener 2026. Spot se promítal na kostce přímo na zimním stadionu.</p>
-          <div style="color: #4B5058; font-size: 0.95rem">Střih · DaVinci Resolve</div>
-          <a href="https://youtu.be/9B_mhXxW6RM" style="font-weight: 700">Přehrát na YouTube →</a>
-        </article>
-
-        <article style="display: flex; flex-direction: column; gap: 0.75rem">
-          <div class="vgrid"><a class="vthumb small" href="https://www.youtube.com/watch?v=6hwiYJhQES8" aria-label="Přehrát na YouTube: Video 1"><img src="https://i.ytimg.com/vi/6hwiYJhQES8/hqdefault.jpg" alt="" loading="lazy"><svg width="40" height="40" viewBox="0 0 64 64" fill="none" stroke="#FFFFFF" stroke-width="2.5" aria-hidden="true"><circle cx="32" cy="32" r="29"></circle><path d="M26 21 L45 32 L26 43 Z" fill="#FFFFFF"></path></svg><span>Video 1</span></a><a class="vthumb small" href="https://www.youtube.com/watch?v=0QnsZ6MyB3U" aria-label="Přehrát na YouTube: Video 2"><img src="https://i.ytimg.com/vi/0QnsZ6MyB3U/hqdefault.jpg" alt="" loading="lazy"><svg width="40" height="40" viewBox="0 0 64 64" fill="none" stroke="#FFFFFF" stroke-width="2.5" aria-hidden="true"><circle cx="32" cy="32" r="29"></circle><path d="M26 21 L45 32 L26 43 Z" fill="#FFFFFF"></path></svg><span>Video 2</span></a><a class="vthumb small" href="https://www.youtube.com/watch?v=NGylWAYmKXs" aria-label="Přehrát na YouTube: Video 3"><img src="https://i.ytimg.com/vi/NGylWAYmKXs/hqdefault.jpg" alt="" loading="lazy"><svg width="40" height="40" viewBox="0 0 64 64" fill="none" stroke="#FFFFFF" stroke-width="2.5" aria-hidden="true"><circle cx="32" cy="32" r="29"></circle><path d="M26 21 L45 32 L26 43 Z" fill="#FFFFFF"></path></svg><span>Video 3</span></a></div>
-          <div style="font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #0F4C75">Střih na zakázku · YouTuber Afko</div>
-          <h3 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.4rem">7 sestříhaných videí pro cizí kanál</h3>
-          <p style="margin: 0; color: #2E3238">Kompletní střih videí pro YouTubera Afka. Každé video má 1 400–2 000 zhlédnutí.</p>
-          
-        </article>
-      </div>
-    </section>
-
-    <section style="display: flex; flex-direction: column; gap: 2rem">
-      <h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 2.2rem; letter-spacing: -0.01em">Grafika</h2>
-
-      <article style="display: flex; flex-wrap: wrap; gap: 2rem 3rem; background: #F5F7F9; border-radius: 14px; padding: 2rem">
-        <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 0.75rem">
-          <div style="font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #0F4C75">Zakázka · Optika Petra Hrdličková</div>
-          <h3 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.6rem; line-height: 1.2">Leták k 25. výročí a slevové vizitky</h3>
-          <p style="margin: 0; color: #2E3238"><strong>Zadání:</strong> navrhnout leták, který oznámí slevu 25 % k 25 letům optiky, a vizitky s reklamou na trvalou slevu 10 %.</p>
-          <p style="margin: 0; color: #2E3238"><strong>Výsledek:</strong> vizitky vyšly v tisku a leták vyšel jako celostránková inzerce v ústeckém časopise Uličník.</p>
-          <div style="color: #4B5058; font-size: 0.95rem">Návrh pro tisk · Affinity</div>
-          <div style="display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem">
-            <a href="https://www.optikahrdlickova.cz/" style="font-weight: 700">Web klienta →</a>
-            <a href="https://www.ulicnikul.cz/" style="font-weight: 700">Časopis Uličník →</a>
-          </div>
-        </div>
-        <div style="flex: 999 1 520px; min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem">
-          <figure style="margin: 0; display: flex; flex-direction: column; gap: 0.4rem">
-            <img src="images/optika-letak.jpg" alt="Návrh letáku Optika – sleva 25 % k 25. výročí" style="width: 100%; aspect-ratio: 3 / 4; object-fit: contain; background: #FFFFFF; border-radius: 8px; display: block">
-            <figcaption style="font-size: 0.9rem; color: #4B5058">Návrh letáku</figcaption>
-          </figure>
-          <figure style="margin: 0; display: flex; flex-direction: column; gap: 0.4rem">
-            <img src="images/optika-ulicnik.jpg" alt="Leták otištěný v časopise Uličník" style="width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 8px; display: block">
-            <figcaption style="font-size: 0.9rem; color: #4B5058">Otištěno v časopise Uličník</figcaption>
-          </figure>
-          <figure style="margin: 0; display: flex; flex-direction: column; gap: 0.4rem">
-            <img src="images/optika-vizitka.jpg" alt="Návrh vizitky se slevou 10 %" style="width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: #FFFFFF; border-radius: 8px; display: block">
-            <figcaption style="font-size: 0.9rem; color: #4B5058">Návrh vizitky</figcaption>
-          </figure>
-          <figure style="margin: 0; display: flex; flex-direction: column; gap: 0.4rem">
-            <img src="images/optika-vizitka-tisk.jpg" alt="Vytištěná vizitka v ruce" style="width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 8px; display: block">
-            <figcaption style="font-size: 0.9rem; color: #4B5058">Hotová vizitka z tisku</figcaption>
-          </figure>
-        </div>
-      </article>
-
-      <article style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem 3rem">
-        <img src="images/farmers-galavecer.jpg" alt="Grafika hráče ČZU Farmers s číslem 21 pro galavečer" style="flex: 1 1 280px; width: 100%; max-width: 420px; height: auto; border-radius: 10px; display: block">
-        <div style="flex: 999 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 0.75rem">
-          <div style="font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #0F4C75">Grafika · ČZU Farmers Prague</div>
-          <h3 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.6rem; line-height: 1.2">Poděkování hráčům na galavečer</h3>
-          <p style="margin: 0; color: #2E3238">Grafiky pro hráče, kteří v týmu končí, připravené na klubový galavečer. Koláž z fotek ze zápasů, klubové barvy a dominantní číslo dresu.</p>
-          <div style="color: #4B5058; font-size: 0.95rem">Affinity</div>
-        </div>
-      </article>
-    </section>
-
-    <section style="display: flex; flex-direction: column; gap: 2rem">
-      <h2 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 2.2rem; letter-spacing: -0.01em">Web a psaní</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 2.5rem 2rem">
-
-        <article style="display: flex; flex-direction: column; gap: 0.75rem; border-top: 3px solid #0F4C75; padding-top: 1.25rem">
-          <div style="font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #0F4C75">Web a profily · ČZU Farmers Prague</div>
-          <h3 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.4rem">Web, ULLH, UniLife a e-mailing</h3>
-          <p style="margin: 0; color: #2E3238">Spravuji webové stránky týmu, jeho profil na Univerzitní lize ledního hokeje a v aplikaci UniLife a řeším marketingový e-mailing.</p>
-          <div style="color: #4B5058; font-size: 0.95rem">HTML · CRM Relatoo</div>
-        </article>
-
-        <article style="display: flex; flex-direction: column; gap: 0.75rem; border-top: 3px solid #0F4C75; padding-top: 1.25rem">
-          <div style="font-size: 0.85rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #0F4C75">Články · ULLH a heyfomo</div>
-          <h3 style="margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.4rem">Zápasové reporty a zprávy</h3>
-          <div>
-            <div style="font-weight: 700">Univerzitní liga ledního hokeje</div>
-            <div style="font-size: 0.95rem; color: #4B5058">Web nezobrazuje autory, texty píšu jako správce profilu týmu.</div>
-            <ul style="margin: 0.4rem 0 0; padding-left: 1.1rem">
-              <li><a href="https://univerzitnihokej.cz/clanek/1625-black-dogs-podlehli-farmers-kteri-sjizdi-viteznou-vlnu">Black Dogs podlehli Farmers, kteří sjíždí vítěznou vlnu</a></li>
-              <li><a href="https://univerzitnihokej.cz/clanek/1624-czu-rozjizdi-slibnou-jizdu">ČZU rozjíždí slibnou jízdu</a></li>
-            </ul>
-          </div>
-          <div>
-            <div style="font-weight: 700">heyfomo</div>
-            <div style="font-size: 0.95rem; color: #4B5058">Zkušební články, publikované bez uvedení autora.</div>
-            <ul style="margin: 0.4rem 0 0; padding-left: 1.1rem">
-              <li><a href="https://heyfomo.cz/opat04-dostal-dalsi-permaban-na-twitchi">Opat04 dostal další permaban na Twitchi</a></li>
-              <li><a href="https://heyfomo.cz/streamerka-amouranth-se-stala-obeti-vydirani-ze-strany-sveho-manzela">Streamerka Amouranth se stala obětí vydírání ze strany svého manžela</a></li>
-              <li><a href="https://heyfomo.cz/ukonci-opat04-sv%C5%AFj-subathon-jiz-tenhle-tyden">Ukončí Opat04 svůj subathon již tenhle týden?</a></li>
-            </ul>
-          </div>
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <section style="max-width: 1120px; margin: 0 auto; padding: 4rem 1.5rem 0">
-    <div style="border-top: 1.5px solid #D5DBE1; padding-top: 3rem; display: flex; flex-wrap: wrap; gap: 2rem 4rem">
-      <h2 style="flex: 1 1 220px; margin: 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 2.2rem">O mně</h2>
-      <div style="flex: 999 1 480px; min-width: 0; color: #2E3238">
-        <p style="margin: 0">Studuji kariérové poradenství na ČZU a mám za sebou studium interaktivní grafiky na VOŠ. Video točím a stříhám od dětství. Ve volném čase mě baví silniční cyklistika, hokej a vytrvalostní sporty.</p>
-        <p style="margin: 1rem 0 0">Nástroje: DaVinci Resolve, Sony Vegas, Affinity, Blender 3D, HTML.</p>
+    <div class="intro">
+      <p>Stříhám videa, navrhuji grafiku pro tisk i sítě a spravuji web. Digitální specialista ČZU Farmers Prague.</p>
+      <div class="actions">
+        <a class="btn solid" href="mailto:tohlejekuba@gmail.com">Napsat e-mail</a>
+        <a class="btn" href="jakub-hlousek-cv.pdf" download>Stáhnout CV</a>
       </div>
     </div>
   </section>
 
-  <footer style="margin-top: 4.5rem; background: #17191C; color: #FFFFFF">
-    <div style="max-width: 1120px; margin: 0 auto; padding: 3.5rem 1.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.5rem; align-items: center">
-      <div style="font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.8rem; font-weight: 700">Pojďme spolupracovat</div>
-      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem 2rem">
-        <a href="mailto:tohlejekuba@gmail.com" style="color: #FFFFFF">tohlejekuba@gmail.com</a>
-        <a href="tel:+420605838944" style="color: #FFFFFF">+420 605 838 944</a>
-        <a href="https://www.linkedin.com/in/jakub-hlou%C5%A1ek-5530352b4" style="color: #FFFFFF">LinkedIn</a>
+  <section class="wrap" id="video">
+    <div class="section-head">
+      <h2>Video</h2>
+      <p class="muted">Spoty a střih pro sport i YouTube, od konceptu po finální export.</p>
+    </div>
+
+    <article class="project">
+      <div class="media">
+        <a class="vthumb" href="https://youtu.be/9B_mhXxW6RM" aria-label="Přehrát na YouTube: Season Opener 2026">
+          <img src="https://i.ytimg.com/vi/9B_mhXxW6RM/hqdefault.jpg" alt="" loading="lazy">
+          <span class="play"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span>
+          <span class="label">Season Opener 2026</span>
+        </a>
+      </div>
+      <div class="copy">
+        <p class="client">ČZU Farmers Prague</p>
+        <h3>30sekundový spot na první zápas sezony</h3>
+        <p>Pozvánka na Season Opener 2026, vytvořená pro univerzitní hokejový tým.</p>
+        <ul class="facts">
+          <li><strong>Odvysíláno na OnePlay Sport</strong> v rámci Bitvy o Prahu</li>
+          <li><strong>Promítáno na kostce</strong> přímo na zimním stadionu</li>
+        </ul>
+        <p class="tools">Střih v DaVinci Resolve</p>
+        <a href="https://youtu.be/9B_mhXxW6RM">Přehrát na YouTube</a>
+      </div>
+    </article>
+
+    <article class="project flip">
+      <div class="media">
+        <div class="vgrid">
+          <a class="vthumb" href="https://www.youtube.com/watch?v=6hwiYJhQES8" aria-label="Přehrát na YouTube: video 1 pro Afka">
+            <img src="https://i.ytimg.com/vi/6hwiYJhQES8/hqdefault.jpg" alt="" loading="lazy">
+            <span class="play"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span>
+            <span class="label">Video 1</span>
+          </a>
+          <a class="vthumb" href="https://www.youtube.com/watch?v=0QnsZ6MyB3U" aria-label="Přehrát na YouTube: video 2 pro Afka">
+            <img src="https://i.ytimg.com/vi/0QnsZ6MyB3U/hqdefault.jpg" alt="" loading="lazy">
+            <span class="play"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span>
+            <span class="label">Video 2</span>
+          </a>
+          <a class="vthumb" href="https://www.youtube.com/watch?v=NGylWAYmKXs" aria-label="Přehrát na YouTube: video 3 pro Afka">
+            <img src="https://i.ytimg.com/vi/NGylWAYmKXs/hqdefault.jpg" alt="" loading="lazy">
+            <span class="play"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span>
+            <span class="label">Video 3</span>
+          </a>
+        </div>
+      </div>
+      <div class="copy">
+        <p class="client">YouTuber Afko, střih na zakázku</p>
+        <h3>Sedm videí pro cizí kanál</h3>
+        <p>Kompletní střih videí pro YouTubera Afka.</p>
+        <ul class="facts">
+          <li><strong>7 sestříhaných videí</strong></li>
+          <li><strong>1 400–2 000 zhlédnutí</strong> u každého videa</li>
+        </ul>
+      </div>
+    </article>
+  </section>
+
+  <section class="wrap section" id="grafika">
+    <div class="section-head">
+      <h2>Grafika</h2>
+      <p class="muted">Návrhy pro tisk i digitál, dělané v Affinity.</p>
+    </div>
+
+    <article class="project">
+      <div class="media gallery">
+        <figure>
+          <div class="frame tall contain"><img src="images/optika-letak.jpg" alt="Návrh letáku Optika – sleva 25 % k 25. výročí" loading="lazy"></div>
+          <figcaption>Návrh letáku</figcaption>
+        </figure>
+        <figure>
+          <div class="frame tall cover"><img src="images/optika-ulicnik.jpg" alt="Leták otištěný v časopise Uličník" loading="lazy"></div>
+          <figcaption>Otištěno v časopise Uličník</figcaption>
+        </figure>
+        <figure>
+          <div class="frame wide contain"><img src="images/optika-vizitka.jpg" alt="Návrh vizitky se slevou 10 %" loading="lazy"></div>
+          <figcaption>Návrh vizitky</figcaption>
+        </figure>
+        <figure>
+          <div class="frame wide cover"><img src="images/optika-vizitka-tisk.jpg" alt="Vytištěná vizitka v ruce" loading="lazy"></div>
+          <figcaption>Hotová vizitka z tisku</figcaption>
+        </figure>
+      </div>
+      <div class="copy">
+        <p class="client">Optika Petra Hrdličková, zakázka</p>
+        <h3>Leták k 25. výročí a slevové vizitky</h3>
+        <p><strong>Zadání:</strong> oznámit slevu 25 % k 25 letům optiky a připravit vizitky s trvalou slevou 10 %.</p>
+        <ul class="facts">
+          <li><strong>Celostránková inzerce</strong> v ústeckém časopise Uličník</li>
+          <li><strong>Vizitky vytištěné</strong> pro klienta</li>
+        </ul>
+        <p class="tools">Návrh pro tisk v Affinity</p>
+        <p><a href="https://www.optikahrdlickova.cz/">Web klienta</a>&nbsp;&nbsp;&nbsp;<a href="https://www.ulicnikul.cz/">Časopis Uličník</a></p>
+      </div>
+    </article>
+
+    <article class="project flip">
+      <div class="media poster">
+        <img src="images/farmers-galavecer.jpg" alt="Grafika hráče ČZU Farmers s číslem 21 pro galavečer" loading="lazy">
+      </div>
+      <div class="copy">
+        <p class="client">ČZU Farmers Prague</p>
+        <h3>Poděkování hráčům na galavečer</h3>
+        <p>Grafiky pro hráče, kteří v týmu končí. Koláž z fotek ze zápasů, klubové barvy a dominantní číslo dresu.</p>
+        <p class="tools">Affinity</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="wrap section" id="rozpracovano">
+    <div class="section-head">
+      <h2>Rozpracováno</h2>
+      <p class="muted">Projekt, na kterém právě pracuji. Výsledky zatím nejsou, ukazuji návrhy.</p>
+    </div>
+
+    <article class="project">
+      <div class="media">
+        <img src="images/esport-manual.jpg" alt="Titulní strana brand manuálu Farmers eSport" style="width:100%;height:auto;border-radius:4px" loading="lazy">
+      </div>
+      <div class="copy">
+        <span class="status">Rozpracovaný koncept</span>
+        <p class="client">ČZU Farmers Prague, vlastní návrh</p>
+        <h3>Farmers eSport: vizuální identita nové sekce</h3>
+        <p>Navrhuji, jak by mohla vypadat eSportová sekce klubu. Vše vychází z brand manuálu Farmers, aby hokej i eSport působily jako jeden klub.</p>
+        <ul class="facts">
+          <li><strong>Rozšíření brand manuálu:</strong> logo s nápisem ESPORT, barvy, písma a pravidla použití</li>
+          <li><strong>Tři varianty dresů:</strong> domácí, venkovní a black edition</li>
+          <li><strong>Šablony příspěvků</strong> a podoba Instagramu, YouTube a Twitche</li>
+        </ul>
+        <p class="tools small">Projekt zatím není realizovaný, všechny ukázky jsou koncepty.</p>
+      </div>
+      <div class="concept-grid" style="grid-column:1 / -1">
+        <figure class="cg-social">
+          <img src="images/esport-socialni.jpg" alt="Šablony příspěvků Farmers eSport: game day, výsledek, představení hráče, nové dresy, watch party, logo" loading="lazy">
+          <figcaption>Šablony příspěvků pro sociální sítě</figcaption>
+        </figure>
+        <div class="cg-brand">
+          <figure>
+            <img src="images/esport-barvy.jpg" alt="Barevná paleta Farmers eSport" loading="lazy">
+            <figcaption>Barvy</figcaption>
+          </figure>
+          <figure>
+            <img src="images/esport-pisma.jpg" alt="Typografie Farmers eSport" loading="lazy">
+            <figcaption>Písma</figcaption>
+          </figure>
+        </div>
+        <figure class="cg-jersey">
+          <img src="images/esport-dresy.jpg" alt="Návrhy dresů Farmers eSport: domácí zepředu a zezadu, venkovní a black edition" loading="lazy">
+          <figcaption>Návrhy dresů: domácí (předek a záda), venkovní a black edition</figcaption>
+        </figure>
+      </div>
+    </article>
+  </section>
+
+  <section class="wrap section" id="psani">
+    <div class="section-head">
+      <h2>Web a psaní</h2>
+    </div>
+    <div class="writing">
+      <div>
+        <h3>Web a profily ČZU Farmers</h3>
+        <p>Spravuji webové stránky týmu, jeho profil na Univerzitní lize ledního hokeje a v aplikaci UniLife a připravuji marketingové e-maily.</p>
+        <p class="tools">HTML, CRM Relatoo</p>
+      </div>
+      <div>
+        <h3>Články</h3>
+        <p class="muted small">Univerzitní liga autory nezobrazuje, texty píšu jako správce profilu týmu. Články pro heyfomo vyšly jako zkušební, bez uvedení autora.</p>
+        <ul class="links">
+          <li><a href="https://univerzitnihokej.cz/clanek/1625-black-dogs-podlehli-farmers-kteri-sjizdi-viteznou-vlnu">Black Dogs podlehli Farmers, kteří sjíždí vítěznou vlnu <span>Univerzitní liga</span></a></li>
+          <li><a href="https://univerzitnihokej.cz/clanek/1624-czu-rozjizdi-slibnou-jizdu">ČZU rozjíždí slibnou jízdu <span>Univerzitní liga</span></a></li>
+          <li><a href="https://heyfomo.cz/opat04-dostal-dalsi-permaban-na-twitchi">Opat04 dostal další permaban na Twitchi <span>heyfomo</span></a></li>
+          <li><a href="https://heyfomo.cz/streamerka-amouranth-se-stala-obeti-vydirani-ze-strany-sveho-manzela">Streamerka Amouranth se stala obětí vydírání ze strany svého manžela <span>heyfomo</span></a></li>
+          <li><a href="https://heyfomo.cz/ukonci-opat04-sv%C5%AFj-subathon-jiz-tenhle-tyden">Ukončí Opat04 svůj subathon již tenhle týden? <span>heyfomo</span></a></li>
+        </ul>
       </div>
     </div>
-  </footer>
-</div>
+  </section>
+
+  <section class="wrap section about" id="o-mne">
+    <h2>O mně</h2>
+    <div>
+      <p>Studuji kariérové poradenství na ČZU a mám za sebou studium interaktivní grafiky na VOŠ. Video točím a stříhám od dětství. Ve volném čase mě baví silniční cyklistika, hokej a vytrvalostní sporty.</p>
+      <p class="tools">DaVinci Resolve, Sony Vegas, Affinity, Blender 3D, HTML</p>
+    </div>
+  </section>
+</main>
+
+<footer class="contact" id="kontakt">
+  <div class="wrap">
+    <p>Máte projekt, video nebo grafiku, se kterou potřebujete pomoct? Napište mi.</p>
+    <a class="mail" href="mailto:tohlejekuba@gmail.com">tohlejekuba@gmail.com</a>
+    <div class="contact-row">
+      <span>Jakub Hloušek, Ústí nad Labem a Praha</span>
+      <ul>
+        <li><a href="mailto:jakubhlousek@farmersczu.cz">jakubhlousek@farmersczu.cz</a> (pracovní)</li>
+        <li><a href="tel:+420605838944">+420 605 838 944</a></li>
+        <li><a href="https://www.linkedin.com/in/jakub-hlou%C5%A1ek-5530352b4">LinkedIn</a></li>
+        <li><a href="jakub-hlousek-cv.pdf" download>CV v PDF</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
