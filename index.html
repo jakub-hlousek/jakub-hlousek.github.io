@@ -230,6 +230,19 @@ html.lenis,html.lenis body{height:auto}
   .rail-r b{font-weight:400;color:var(--muted)}
 }
 
+/* menu životopisu */
+.cvmenu{position:relative}
+.cvpop{position:absolute;right:0;top:calc(100% + 10px);z-index:12;min-width:260px;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:6px;box-shadow:8px 8px 0 var(--blue);display:flex;flex-direction:column;gap:2px;opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .2s ease,transform .3s cubic-bezier(.2,.8,.2,1),visibility 0s .3s}
+.cvpop.open{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .3s cubic-bezier(.2,.8,.2,1)}
+.cvpop a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;color:var(--ink);text-decoration:none}
+.cvpop a:hover,.cvpop a:focus-visible{background:var(--panel);color:var(--ink)}
+.cvpop a svg{flex:none;color:var(--blue)}
+.cvpop span{display:flex;flex-direction:column;line-height:1.25}
+.cvpop small{font-size:13px;color:var(--muted)}
+.intro{position:relative;z-index:13}
+@media (max-width:560px){.cvmenu{position:static}.actions{position:relative}.cvpop{left:0;right:0;min-width:0}}
+@media (prefers-reduced-motion:reduce){.cvpop,.cvpop.open{transition:none}}
+
 /* kontaktní panel */
 .btn .chev{margin-left:10px;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
 .btn[aria-expanded="true"] .chev{transform:rotate(180deg)}
@@ -360,7 +373,13 @@ html.lenis,html.lenis body{height:auto}
       <p>Stříhám videa, navrhuji grafiku pro tisk i sítě a spravuji web. Digitální specialista ČZU Farmers Prague.</p>
       <div class="actions">
         <button type="button" class="btn solid" aria-expanded="false" aria-controls="reach">Kontaktovat<svg class="chev" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <a class="btn" href="jakub-hlousek-cv.pdf" download>Stáhnout CV</a>
+        <div class="cvmenu">
+          <button type="button" class="btn" aria-expanded="false" aria-controls="cvpop">Životopis<svg class="chev" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="cvpop" id="cvpop">
+            <a href="jakub-hlousek-cv.pdf" target="_blank" rel="noopener"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg><span><b>Zobrazit CV</b><small>Otevře se v nové kartě</small></span></a>
+            <a href="jakub-hlousek-cv.pdf" download="Jakub-Hlousek-CV.pdf"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>Stáhnout PDF</b><small>Jedna strana A4</small></span></a>
+          </div>
+        </div>
       </div>
     </div>
     <div class="reach" id="reach">
@@ -805,6 +824,18 @@ html.lenis,html.lenis body{height:auto}
     tick=false;
   }
   addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(upd)}},{passive:true}); addEventListener('resize',upd); upd(); var nv=document.querySelector('.nav ul'); if(nv&&window.MutationObserver) new MutationObserver(function(){upd()}).observe(nv,{subtree:true,attributes:true,attributeFilter:['class']});
+})();
+</script>
+<script>
+(function(){
+  var btn=document.querySelector('[aria-controls="cvpop"]'), pop=document.getElementById('cvpop'); if(!btn||!pop) return;
+  var reachBtn=document.querySelector('[aria-controls="reach"]');
+  function set(o){pop.classList.toggle('open',o); btn.setAttribute('aria-expanded',o);}
+  btn.addEventListener('click',function(e){e.stopPropagation(); var o=btn.getAttribute('aria-expanded')!=='true'; set(o); if(o){ if(reachBtn&&reachBtn.getAttribute('aria-expanded')==='true') reachBtn.click(); setTimeout(function(){pop.querySelector('a').focus({preventScroll:true})},60);} });
+  document.addEventListener('click',function(e){if(!pop.contains(e.target)&&e.target!==btn) set(false)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&btn.getAttribute('aria-expanded')==='true'){set(false);btn.focus();}});
+  pop.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){setTimeout(function(){set(false)},150)})});
+  if(reachBtn) reachBtn.addEventListener('click',function(){set(false)});
 })();
 </script>
 </body>
