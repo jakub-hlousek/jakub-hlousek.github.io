@@ -245,6 +245,8 @@ html.lenis,html.lenis body{height:auto}
 .links a{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;color:var(--ink);text-decoration:none;font-weight:600;line-height:1.35}
 .links a span{font-weight:400;font-size:14px;color:var(--muted);white-space:nowrap}
 .links a:hover{color:var(--blue)}
+.links .row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:14px 0;color:var(--ink);font-weight:600;line-height:1.35}
+.links .row span{font-weight:400;font-size:14px;color:var(--muted);white-space:nowrap}
 
 /* o mně + kontakt */
 .about{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px clamp(20px,3vw,40px)}
@@ -274,7 +276,7 @@ html.lenis,html.lenis body{height:auto}
   .portrait{width:120px;margin:8px 8px 24px;order:-1}
   .name{font-size:17vw}
   .gallery{grid-template-columns:1fr 1fr;gap:8px}
-  .links a{flex-direction:column;gap:2px}
+  .links a,.links .row{flex-direction:column;gap:2px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -510,13 +512,14 @@ html.lenis,html.lenis body{height:auto}
 
         <p class="links-head">Web ČZU Farmers</p>
         <ul class="links">
-          <li><a href="https://czufarmers.cz/#clanky">Do nové sezóny pod novým vedením <span>25. 5. 2026</span></a></li>
-          <li><a href="https://czufarmers.cz/#clanky">Farmers zakončili sezónu. Poslední krok v play-in nevyšel <span>13. 4. 2026</span></a></li>
-          <li><a href="https://czufarmers.cz/#clanky">Historický milník pro ČZU Farmers. Poprvé míří do play-in, vyzvou Akademiky z Plzně! <span>27. 3. 2026</span></a></li>
-          <li><a href="https://czufarmers.cz/#clanky">Chystají se Farmers na vítěznou vlnu? <span>12. 2. 2026</span></a></li>
+          <li><span class="row">Do nové sezóny pod novým vedením <span>25. 5. 2026</span></span></li>
+          <li><span class="row">Farmers zakončili sezónu. Poslední krok v play-in nevyšel <span>13. 4. 2026</span></span></li>
+          <li><span class="row">Historický milník pro ČZU Farmers. Poprvé míří do play-in, vyzvou Akademiky z Plzně! <span>27. 3. 2026</span></span></li>
+          <li><span class="row">Chystají se Farmers na vítěznou vlnu? <span>12. 2. 2026</span></span></li>
           <li><a href="https://univerzitnihokej.cz/clanek/1625-black-dogs-podlehli-farmers-kteri-sjizdi-viteznou-vlnu">Black Dogs podlehli Farmers, kteří sjíždí vítěznou vlnu! <span>12. 2. 2026, i na webu ligy</span></a></li>
           <li><a href="https://univerzitnihokej.cz/clanek/1624-czu-rozjizdi-slibnou-jizdu">ČZU rozjíždí slibnou jízdu! <span>12. 2. 2026, i na webu ligy</span></a></li>
         </ul>
+        <p class="small"><a href="https://czufarmers.cz/">Číst na czufarmers.cz</a></p>
 
         <p class="links-head">heyfomo</p>
         <ul class="links">
@@ -524,7 +527,7 @@ html.lenis,html.lenis body{height:auto}
           <li><a href="https://heyfomo.cz/streamerka-amouranth-se-stala-obeti-vydirani-ze-strany-sveho-manzela">Streamerka Amouranth se stala obětí vydírání ze strany svého manžela <span>zkušební článek</span></a></li>
           <li><a href="https://heyfomo.cz/ukonci-opat04-sv%C5%AFj-subathon-jiz-tenhle-tyden">Ukončí Opat04 svůj subathon již tenhle týden? <span>zkušební článek</span></a></li>
         </ul>
-        <p><a href="https://czufarmers.cz/#clanky">Všechny články na czufarmers.cz</a></p>
+        
       </div>
     </div>
   </section>
