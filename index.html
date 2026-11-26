@@ -77,7 +77,8 @@ p{margin:0}
 .project{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:28px clamp(20px,3vw,40px);padding-top:32px;padding-bottom:clamp(48px,6vw,80px);border-top:1px solid var(--line)}
 .project:first-of-type{border-top:0;padding-top:0}
 .media{grid-column:1 / span 8}
-.copy{grid-column:9 / span 4;display:flex;flex-direction:column;gap:14px}
+.copy{grid-column:9 / span 4;display:flex;flex-direction:column;gap:14px;align-self:start}
+@media (min-width:861px){.copy{position:sticky;top:96px}}
 .project.flip .media{grid-column:5 / span 8;grid-row:1}
 .project.flip .copy{grid-column:1 / span 4;grid-row:1}
 .client{font-size:15px;color:var(--muted)}
@@ -108,8 +109,8 @@ p{margin:0}
 .gallery .contain img{width:82%;height:auto;max-height:88%;object-fit:contain;box-shadow:0 1px 2px rgba(0,0,0,.08)}
 .gallery .cover img{width:100%;height:100%;object-fit:cover}
 figcaption{font-size:14px;color:var(--muted);padding-top:8px}
-.poster{background:var(--panel);border-radius:4px;display:grid;place-items:center;padding:clamp(24px,5vw,64px)}
-.poster img{width:min(100%,420px);height:auto;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.poster{background:var(--panel);border-radius:4px;display:grid;place-items:center;padding:clamp(20px,3.5vw,44px)}
+.poster img{width:min(100%,360px);height:auto;box-shadow:0 2px 6px rgba(0,0,0,.12)}
 
 /* rozpracováno */
 .status{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:5px 12px;border-radius:999px;background:var(--panel);color:var(--ink);font-size:14px;font-weight:600}
@@ -246,6 +247,14 @@ html.lenis,html.lenis body{height:auto}
 /* web a psaní */
 .writing{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:40px clamp(20px,3vw,40px)}
 .writing > div{grid-column:span 6;display:flex;flex-direction:column;gap:12px}
+.web-col{align-self:start}
+@media (min-width:861px){.web-col{position:sticky;top:96px}}
+.channels{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.channels li > a,.channels li > div{display:flex;flex-direction:column;gap:2px;padding:16px 18px;border-radius:14px;background:var(--panel);color:var(--ink);text-decoration:none;transition:background-color .2s,color .2s}
+.channels b{font-weight:700;font-size:17px}
+.channels span{font-size:14px;color:var(--muted);transition:color .2s}
+.channels li > a:hover{background:var(--blue);color:#fff}
+.channels li > a:hover span{color:#DDE1FF}
 .links{list-style:none;margin:8px 0 0;padding:0;border-top:2px solid var(--ink)}
 .links-head{margin:18px 0 -2px;font-size:14px;font-weight:600;color:var(--ink)}
 .links li{border-bottom:1px solid var(--line)}
@@ -256,7 +265,7 @@ html.lenis,html.lenis body{height:auto}
 .links .row span{font-weight:400;font-size:14px;color:var(--muted);white-space:nowrap}
 
 /* o mně + kontakt */
-.about-box{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:32px clamp(20px,3vw,40px);background:var(--panel);border-radius:20px;padding:clamp(28px,5vw,64px)}
+.about-box{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:32px clamp(20px,3vw,40px);background:#fff;border:2px solid var(--ink);border-radius:20px;padding:clamp(28px,5vw,64px);box-shadow:12px 12px 0 var(--blue);margin-right:12px}
 .about-side{grid-column:span 5;display:flex;flex-direction:column;gap:28px}
 .about-facts{margin:0;display:flex;flex-direction:column;border-top:2px solid var(--ink)}
 .about-facts div{display:grid;grid-template-columns:88px minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px solid #D2D3CC}
@@ -265,7 +274,7 @@ html.lenis,html.lenis body{height:auto}
 .about-text{grid-column:7 / span 6;display:flex;flex-direction:column;gap:16px;font-size:19px;line-height:1.55}
 .about-text p:first-child{font-size:clamp(21px,2vw,25px);line-height:1.4;color:var(--ink)}
 .tool-chips{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.tool-chips li{background:#fff;border-radius:999px;padding:6px 14px;font-size:14px;font-weight:500;color:var(--ink)}
+.tool-chips li{background:var(--panel);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:500;color:var(--ink)}
 .contact{margin-top:clamp(80px,10vw,140px);background:var(--blue);color:#fff}
 .contact .wrap{padding-top:clamp(56px,8vw,96px);padding-bottom:clamp(40px,5vw,56px)}
 .contact p{font-size:18px;max-width:30ch}
@@ -306,6 +315,7 @@ html.lenis,html.lenis body{height:auto}
       <li><a href="#grafika">Grafika</a></li>
       <li><a href="#pracuji">Na čem pracuji</a></li>
       <li><a href="#psani">Web a psaní</a></li>
+      <li><a href="#o-mne">O mně</a></li>
       <li><a href="#kontakt">Kontakt</a></li>
     </ul>
   </nav>
@@ -535,11 +545,15 @@ html.lenis,html.lenis body{height:auto}
     </article>
 
     <div class="writing">
-      <div>
+      <div class="web-col">
         <h3>Web a profily ČZU Farmers</h3>
-        <p>Spravuji webové stránky týmu, jeho profil na Univerzitní lize ledního hokeje a v aplikaci UniLife a připravuji marketingové e-maily.</p>
-        <p class="tools">HTML, CRM Relatoo</p>
-        <p><a href="https://czufarmers.cz/">czufarmers.cz</a>&nbsp;&nbsp;&nbsp;<a href="https://univerzitnihokej.cz/">Univerzitní liga</a></p>
+        <p>Starám se o to, jak tým vypadá online: od webu přes ligový profil a studentskou aplikaci až po e-maily fanouškům.</p>
+        <ul class="channels">
+          <li><a href="https://czufarmers.cz/"><b>czufarmers.cz</b><span>Web týmu: aktuality, zápasy, články</span></a></li>
+          <li><a href="https://univerzitnihokej.cz/"><b>Univerzitní liga ledního hokeje</b><span>Profil týmu a zápasové reporty</span></a></li>
+          <li><div><b>UniLife</b><span>Profil týmu ve studentské aplikaci</span></div></li>
+          <li><div><b>E-maily fanouškům</b><span>Pozvánky na zápasy a akce, CRM Relatoo</span></div></li>
+        </ul>
       </div>
       <div>
         <h3>Články</h3>
