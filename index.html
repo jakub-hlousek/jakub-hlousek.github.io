@@ -65,7 +65,7 @@ p{margin:0}
 .intro{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px 48px;align-items:end;margin-top:clamp(32px,5vw,56px);padding-top:24px;border-top:2px solid var(--ink)}
 .intro p{font-size:clamp(19px,2vw,24px);line-height:1.4;max-width:34ch;color:var(--ink)}
 .actions{display:flex;flex-wrap:wrap;gap:10px}
-.btn{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;font-weight:600;text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:transparent;transition:background-color .15s,color .15s}
+.btn{font:inherit;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;font-weight:600;text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:transparent;transition:background-color .15s,color .15s}
 .btn:hover{background:var(--ink);color:#fff}
 .btn.solid{background:var(--blue);border-color:var(--blue);color:#fff}
 .btn.solid:hover{background:var(--blue-dark);border-color:var(--blue-dark)}
@@ -184,6 +184,28 @@ html.lenis,html.lenis body{height:auto}
 @media (max-width:560px){.lb-nav{top:auto;bottom:64px;transform:none}}
 @media (prefers-reduced-motion:reduce){.lb[open],.lb-stage img{animation:none}}
 
+/* kontaktní panel */
+.btn .chev{margin-left:10px;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.btn[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.reach{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s cubic-bezier(.2,.8,.2,1)}
+.reach.open{grid-template-rows:1fr}
+.reach-in{overflow:hidden;min-height:0}
+.reach-list{list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.reach-list li{background:var(--panel);border-radius:14px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:12px;opacity:0;transform:translateY(14px);transition:opacity .4s ease,transform .5s cubic-bezier(.2,.8,.2,1)}
+.reach.open .reach-list li{opacity:1;transform:none}
+.reach.open .reach-list li:nth-child(2){transition-delay:.06s}
+.reach.open .reach-list li:nth-child(3){transition-delay:.12s}
+.reach-label{font-size:14px;color:var(--muted)}
+.reach-value{font-weight:700;color:var(--ink);font-size:clamp(16px,1.6vw,19px);word-break:break-word;line-height:1.3}
+.reach-act{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+.chip{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:999px;font:inherit;font-size:14px;font-weight:600;text-decoration:none;border:1.5px solid var(--ink);color:var(--ink);background:#fff;cursor:pointer;transition:background-color .15s,color .15s,border-color .15s}
+.chip:hover{background:var(--ink);color:#fff}
+.chip.solid{background:var(--blue);border-color:var(--blue);color:#fff}
+.chip.solid:hover{background:var(--blue-dark);border-color:var(--blue-dark)}
+.chip.done{background:var(--ink);color:#fff}
+@media (max-width:860px){.reach-list{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.reach,.reach-list li,.btn .chev{transition:none}}
+
 @media (max-width:860px){.cg-social,.cg-brand{grid-column:1 / -1}}
 
 /* web a psaní */
@@ -254,8 +276,29 @@ html.lenis,html.lenis body{height:auto}
     <div class="intro">
       <p>Stříhám videa, navrhuji grafiku pro tisk i sítě a spravuji web. Digitální specialista ČZU Farmers Prague.</p>
       <div class="actions">
-        <a class="btn solid" href="mailto:tohlejekuba@gmail.com">Napsat e-mail</a>
+        <button type="button" class="btn solid" aria-expanded="false" aria-controls="reach">Kontaktovat<svg class="chev" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <a class="btn" href="jakub-hlousek-cv.pdf" download>Stáhnout CV</a>
+      </div>
+    </div>
+    <div class="reach" id="reach">
+      <div class="reach-in">
+        <ul class="reach-list">
+          <li>
+            <span class="reach-label">Osobní e-mail</span>
+            <span class="reach-value">tohlejekuba@gmail.com</span>
+            <span class="reach-act"><a class="chip solid" href="mailto:tohlejekuba@gmail.com">Napsat</a><button type="button" class="chip" data-copy="tohlejekuba@gmail.com">Kopírovat</button></span>
+          </li>
+          <li>
+            <span class="reach-label">Pracovní e-mail, ČZU Farmers</span>
+            <span class="reach-value">jakubhlousek@farmersczu.cz</span>
+            <span class="reach-act"><a class="chip solid" href="mailto:jakubhlousek@farmersczu.cz">Napsat</a><button type="button" class="chip" data-copy="jakubhlousek@farmersczu.cz">Kopírovat</button></span>
+          </li>
+          <li>
+            <span class="reach-label">Telefon</span>
+            <span class="reach-value">+420 605 838 944</span>
+            <span class="reach-act"><a class="chip solid" href="tel:+420605838944">Zavolat</a><button type="button" class="chip" data-copy="+420 605 838 944">Kopírovat</button></span>
+          </li>
+        </ul>
       </div>
     </div>
   </section>
@@ -585,6 +628,23 @@ html.lenis,html.lenis body{height:auto}
   dlg.addEventListener('keydown',function(e){if(e.key==='ArrowLeft')show(cur-1); if(e.key==='ArrowRight')show(cur+1);});
   var sx=null; dlg.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});
   dlg.addEventListener('touchend',function(e){if(sx===null)return; var dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>50) show(cur+(dx<0?1:-1)); sx=null;});
+})();
+</script>
+<script>
+(function(){
+  var btn=document.querySelector('[aria-controls="reach"]'), panel=document.getElementById('reach'); if(!btn||!panel) return;
+  function set(o){panel.classList.toggle('open',o); btn.setAttribute('aria-expanded',o); panel.querySelectorAll('a,button').forEach(function(el){el.tabIndex=o?0:-1});}
+  set(false);
+  btn.addEventListener('click',function(){var o=btn.getAttribute('aria-expanded')!=='true'; set(o); if(o) setTimeout(function(){panel.querySelector('a').focus({preventScroll:true})},350);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&btn.getAttribute('aria-expanded')==='true'){set(false);btn.focus();}});
+  panel.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var v=b.getAttribute('data-copy');
+      function ok(){b.textContent='Zkopírováno'; b.classList.add('done'); setTimeout(function(){b.textContent='Kopírovat'; b.classList.remove('done')},1800);}
+      if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(v).then(ok,fallback)} else fallback();
+      function fallback(){var ta=document.createElement('textarea'); ta.value=v; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy'); ok();}catch(e){} document.body.removeChild(ta);}
+    });
+  });
 })();
 </script>
 </body>
