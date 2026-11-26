@@ -236,6 +236,13 @@ html.lenis,html.lenis body{height:auto}
 
 @media (max-width:860px){.cg-social,.cg-brand{grid-column:1 / -1}}
 
+/* mailing */
+.mail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-content:start}
+.mail-grid figure{margin:0}
+.mail-frame{aspect-ratio:1;border-radius:4px;overflow:hidden;background:#fff;border:1px solid var(--line)}
+.mail-frame img{width:100%;height:100%;object-fit:cover;object-position:top}
+#psani .project{padding-bottom:clamp(48px,6vw,80px);margin-bottom:clamp(8px,2vw,24px)}
+
 /* web a psaní */
 .writing{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:40px clamp(20px,3vw,40px)}
 .writing > div{grid-column:span 6;display:flex;flex-direction:column;gap:12px}
@@ -499,6 +506,27 @@ html.lenis,html.lenis body{height:auto}
     <div class="section-head">
       <h2>Web a psaní</h2>
     </div>
+
+    <article class="project" data-group="Mailing">
+      <div class="media mail-grid">
+        <figure><div class="mail-frame"><img src="images/mail-vyjezd-plzen.jpg" alt="E-mail Přibal kámoše: výjezd fanoušků do Plzně" loading="lazy"></div><figcaption>Výjezd do Plzně</figcaption></figure>
+        <figure><div class="mail-frame"><img src="images/mail-season-opener.jpg" alt="E-mail Season Opener: ČZU Farmers proti ČVUT Engineers" loading="lazy"></div><figcaption>Season Opener</figcaption></figure>
+        <figure><div class="mail-frame"><img src="images/mail-pochod-bitva.jpg" alt="E-mail Pochod ČZU na Bitvu" loading="lazy"></div><figcaption>Pochod ČZU na Bitvu o Prahu</figcaption></figure>
+        <figure><div class="mail-frame"><img src="images/mail-posledni-zapas.jpg" alt="E-mail o posledním domácím zápase roku" loading="lazy"></div><figcaption>Poslední domácí zápas roku</figcaption></figure>
+      </div>
+      <div class="copy">
+        <p class="client">ČZU Farmers Prague</p>
+        <h3>Marketingové e-maily pro fanoušky</h3>
+        <p>Pozvánky na zápasy, výjezdy a akce kolem týmu. Každý e-mail má jeden jasný cíl: přivést lidi na zimák, naplnit autobus nebo prodat vstupenky.</p>
+        <ul class="facts">
+          <li><strong>Season Opener</strong> proti ČVUT Engineers</li>
+          <li><strong>Bitva o Prahu:</strong> společný pochod fanoušků</li>
+          <li><strong>Výjezd do Plzně</strong> a poslední domácí zápas roku</li>
+        </ul>
+        <p class="tools">CRM Relatoo</p>
+      </div>
+    </article>
+
     <div class="writing">
       <div>
         <h3>Web a profily ČZU Farmers</h3>
@@ -654,7 +682,7 @@ html.lenis,html.lenis body{height:auto}
 <script>
 (function(){
   var dlg=document.querySelector('.lb'); if(!dlg||!dlg.showModal) return;
-  var imgs=[].slice.call(document.querySelectorAll('#grafika img, #pracuji img'));
+  var imgs=[].slice.call(document.querySelectorAll('#grafika img, #pracuji img, #psani img'));
   var thumbs=dlg.querySelector('.lb-thumbs'); var tabs=dlg.querySelector('.lb-tabs'); var groups=[], gIdx=[]; var stage=dlg.querySelector('.lb-stage img'), cap=dlg.querySelector('.lb-cap'), cnt=dlg.querySelector('.lb-count'), cur=0, last=null;
   function captionOf(im){var f=im.closest('figure'); var fc=f&&f.querySelector('figcaption'); return fc?fc.textContent:im.alt;}
   function show(i){cur=(i+imgs.length)%imgs.length; var im=imgs[cur]; stage.src=im.currentSrc||im.src; stage.alt=im.alt; cap.textContent=captionOf(im); cnt.textContent=(cur+1)+' / '+imgs.length; [].forEach.call(tabs.children,function(b,k){b.setAttribute('aria-current',k===gIdx[cur]?'true':'false'); if(k===gIdx[cur]) tabs.scrollTo({left:b.offsetLeft-12,behavior:'smooth'});}); [].forEach.call(thumbs.children,function(b,j){b.setAttribute('aria-current',j===cur?'true':'false'); if(j===cur){thumbs.scrollTo({left:b.offsetLeft-thumbs.clientWidth/2+b.offsetWidth/2,behavior:'smooth'});}}); stage.style.animation='none'; stage.offsetHeight; stage.style.animation='';}
