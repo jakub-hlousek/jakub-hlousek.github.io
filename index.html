@@ -165,6 +165,25 @@ html.lenis,html.lenis body{height:auto}
   .cursor{display:none}
 }
 
+/* zvětšení obrázků */
+.zoomable{cursor:zoom-in}
+.zoomable:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.lb{position:fixed;inset:0;z-index:60;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:rgba(10,10,12,.97);color:#fff;display:none}
+.lb[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto;animation:lbin .25s ease}
+.lb::backdrop{background:transparent}
+@keyframes lbin{from{opacity:0}to{opacity:1}}
+.lb-top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px var(--gut);font-size:14px;color:#d8d8d8}
+.lb-stage{display:grid;place-items:center;min-height:0;padding:0 clamp(12px,6vw,96px)}
+.lb-stage img{max-width:100%;max-height:calc(100vh - 150px);max-height:calc(100dvh - 150px);width:auto;height:auto;object-fit:contain;border-radius:4px;animation:lbimg .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes lbimg{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+.lb-cap{padding:14px var(--gut) 22px;text-align:center;font-size:15px;color:#e6e6e6;min-height:1.6em}
+.lb button{font:inherit;color:#fff;background:rgba(255,255,255,.1);border:0;border-radius:999px;min-width:48px;min-height:48px;display:inline-grid;place-items:center;cursor:pointer;transition:background-color .15s}
+.lb button:hover{background:var(--blue)}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%)}
+.lb-prev{left:clamp(8px,2vw,24px)}.lb-next{right:clamp(8px,2vw,24px)}
+@media (max-width:560px){.lb-nav{top:auto;bottom:64px;transform:none}}
+@media (prefers-reduced-motion:reduce){.lb[open],.lb-stage img{animation:none}}
+
 @media (max-width:860px){.cg-social,.cg-brand{grid-column:1 / -1}}
 
 /* web a psaní */
@@ -453,6 +472,14 @@ html.lenis,html.lenis body{height:auto}
   </div>
 </footer>
 
+<dialog class="lb" aria-label="Zvětšený obrázek">
+  <div class="lb-top"><span class="lb-count"></span><button type="button" class="lb-close" aria-label="Zavřít"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg></button></div>
+  <div class="lb-stage"><img alt=""></div>
+  <p class="lb-cap"></p>
+  <button type="button" class="lb-nav lb-prev" aria-label="Předchozí obrázek"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <button type="button" class="lb-nav lb-next" aria-label="Další obrázek"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+</dialog>
+
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script>
 (function(){
@@ -486,7 +513,7 @@ html.lenis,html.lenis body{height:auto}
   /* plynulý scroll (jen myš/touchpad) */
   var lenis=null;
   if(fine && !reduce && window.Lenis){
-    lenis=new Lenis({duration:1.1,smoothWheel:true});
+    lenis=new Lenis({duration:1.1,smoothWheel:true}); window.__lenis=lenis;
     (function raf(t){lenis.raf(t);requestAnimationFrame(raf)})(performance.now());
     document.querySelectorAll('a[href^="#"]').forEach(function(a){
       a.addEventListener('click',function(ev){var id=a.getAttribute('href'); var el=id==='#top'?0:document.querySelector(id); if(el===null)return; ev.preventDefault(); lenis.scrollTo(el,{offset:id==='#top'?0:-84});});
@@ -534,6 +561,30 @@ html.lenis,html.lenis body{height:auto}
     es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(a){a.classList.remove('active');a.removeAttribute('aria-current')}); var a=map[e.target.id]; if(a){a.classList.add('active');a.setAttribute('aria-current','true'); var nv=a.closest('nav'); if(nv.scrollWidth>nv.clientWidth){nv.scrollTo({left:Math.max(0,a.offsetLeft-24),behavior:'smooth'});}} } });
   },{rootMargin:'-45% 0px -50% 0px'});
   Object.keys(map).forEach(function(id){io.observe(document.getElementById(id))});
+})();
+</script>
+<script>
+(function(){
+  var dlg=document.querySelector('.lb'); if(!dlg||!dlg.showModal) return;
+  var imgs=[].slice.call(document.querySelectorAll('#grafika img, #pracuji img'));
+  var stage=dlg.querySelector('.lb-stage img'), cap=dlg.querySelector('.lb-cap'), cnt=dlg.querySelector('.lb-count'), cur=0, last=null;
+  function captionOf(im){var f=im.closest('figure'); var fc=f&&f.querySelector('figcaption'); return fc?fc.textContent:im.alt;}
+  function show(i){cur=(i+imgs.length)%imgs.length; var im=imgs[cur]; stage.src=im.currentSrc||im.src; stage.alt=im.alt; cap.textContent=captionOf(im); cnt.textContent=(cur+1)+' / '+imgs.length; stage.style.animation='none'; stage.offsetHeight; stage.style.animation='';}
+  function open(i){last=document.activeElement; show(i); dlg.showModal(); document.documentElement.style.overflow='hidden'; if(window.__lenis) window.__lenis.stop();}
+  function close(){dlg.close();}
+  dlg.addEventListener('close',function(){document.documentElement.style.overflow=''; if(window.__lenis) window.__lenis.start(); if(last) last.focus();});
+  imgs.forEach(function(im,i){
+    im.classList.add('zoomable'); im.tabIndex=0; im.setAttribute('role','button'); im.setAttribute('aria-label','Zvětšit: '+im.alt);
+    im.addEventListener('click',function(){open(i)});
+    im.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open(i)}});
+  });
+  dlg.querySelector('.lb-close').addEventListener('click',close);
+  dlg.querySelector('.lb-prev').addEventListener('click',function(){show(cur-1)});
+  dlg.querySelector('.lb-next').addEventListener('click',function(){show(cur+1)});
+  dlg.addEventListener('click',function(e){if(e.target===dlg||e.target.classList.contains('lb-stage')) close();});
+  dlg.addEventListener('keydown',function(e){if(e.key==='ArrowLeft')show(cur-1); if(e.key==='ArrowRight')show(cur+1);});
+  var sx=null; dlg.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});
+  dlg.addEventListener('touchend',function(e){if(sx===null)return; var dx=e.changedTouches[0].clientX-sx; if(Math.abs(dx)>50) show(cur+(dx<0?1:-1)); sx=null;});
 })();
 </script>
 </body>
