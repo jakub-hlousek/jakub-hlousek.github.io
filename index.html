@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Jakub Hloušek – portfolio</title>
-<meta name="description" content="Portfolio Jakuba Hlouška: střih videa, grafika pro tisk i sítě, správa webu a články.">
+<meta name="description" content="Portfolio Jakuba Hlouška: marketing a tvorba obsahu. Střih videa, grafika pro tisk i sítě, správa webu, e-maily a články.">
 <meta property="og:title" content="Jakub Hloušek – portfolio">
 <meta property="og:description" content="Střih videa, grafika pro tisk i sítě, správa webu a články.">
 <meta property="og:image" content="https://truffycz.github.io/jakubhlousek/images/jakub-hlousek.jpg">
@@ -65,6 +65,7 @@ p{margin:0}
 .name > span + span{color:var(--blue)}
 .portrait{width:clamp(120px,17vw,220px);aspect-ratio:1;object-fit:cover;object-position:50% 28%;border-radius:50%;outline:2px solid var(--blue);outline-offset:6px;margin:8px}
 .intro{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px 48px;align-items:end;margin-top:clamp(32px,5vw,56px);padding-top:24px;border-top:2px solid var(--ink)}
+.intro-text{display:flex;flex-direction:column;gap:16px;align-items:flex-start}
 .intro p{font-size:clamp(19px,2vw,24px);line-height:1.4;max-width:34ch;color:var(--ink)}
 .actions{display:flex;flex-wrap:wrap;gap:10px}
 .btn{font:inherit;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:999px;font-weight:600;text-decoration:none;border:2px solid var(--ink);color:var(--ink);background:transparent;transition:background-color .15s,color .15s}
@@ -372,7 +373,10 @@ html.lenis,html.lenis body{height:auto}
       <img class="portrait" src="images/jakub-hlousek.jpg" alt="Jakub Hloušek">
     </div>
     <div class="intro">
-      <p>Stříhám videa, navrhuji grafiku pro tisk i sítě a spravuji web. Digitální specialista ČZU Farmers Prague.</p>
+      <div class="intro-text">
+        <span class="status">Hledám místo v marketingu a tvorbě obsahu</span>
+        <p>Stříhám videa, navrhuji grafiku pro tisk i sítě a spravuji web. Digitální specialista ČZU Farmers Prague.</p>
+      </div>
       <div class="actions">
         <button type="button" class="btn solid" aria-expanded="false" aria-controls="reach">Kontaktovat<svg class="chev" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <div class="cvmenu">
