@@ -182,6 +182,14 @@ html.lenis,html.lenis body{height:auto}
 .lb-nav{position:absolute;top:50%;transform:translateY(-50%)}
 .lb-prev{left:clamp(8px,2vw,24px)}.lb-next{right:clamp(8px,2vw,24px)}
 @media (max-width:560px){.lb-nav{top:auto;bottom:64px;transform:none}}
+.lb-tabs{display:flex;gap:2px;padding:4px;background:rgba(255,255,255,.1);border-radius:999px;overflow-x:auto;scrollbar-width:none;max-width:100%}
+.lb-tabs::-webkit-scrollbar{display:none}
+.lb .lb-tabs button{min-width:0;min-height:0;padding:8px 16px;border-radius:999px;background:transparent;font-size:14px;font-weight:500;white-space:nowrap;color:#e8e8e8}
+.lb .lb-tabs button:hover{background:rgba(255,255,255,.16)}
+.lb .lb-tabs button[aria-current="true"]{background:var(--blue);color:#fff}
+.lb-count{min-width:48px}
+@media (max-width:560px){.lb-top{flex-wrap:wrap}.lb-tabs{order:3;width:100%}}
+
 .lb-thumbs{display:flex;gap:8px;overflow-x:auto;padding:4px var(--gut) 20px;scrollbar-width:none;justify-content:safe center}
 .lb-thumbs::-webkit-scrollbar{display:none}
 .lb .lb-thumbs button{flex:none;width:72px;height:72px;min-width:0;min-height:0;padding:0;border-radius:8px;overflow:hidden;background:#222;opacity:.45;outline:2px solid transparent;outline-offset:2px;transition:opacity .2s,outline-color .2s}
@@ -383,7 +391,7 @@ html.lenis,html.lenis body{height:auto}
       <p class="muted">Návrhy pro tisk i digitál, dělané v Affinity.</p>
     </div>
 
-    <article class="project">
+    <article class="project" data-group="Optika">
       <div class="media gallery">
         <figure>
           <div class="frame tall contain"><img src="images/optika-letak.jpg" alt="Návrh letáku Optika – sleva 25 % k 25. výročí" loading="lazy"></div>
@@ -415,7 +423,7 @@ html.lenis,html.lenis body{height:auto}
       </div>
     </article>
 
-    <article class="project flip">
+    <article class="project flip" data-group="Galavečer">
       <div class="media poster">
         <img src="images/farmers-galavecer.jpg" alt="Grafika hráče ČZU Farmers s číslem 21 pro galavečer" loading="lazy">
       </div>
@@ -434,7 +442,7 @@ html.lenis,html.lenis body{height:auto}
       <p class="muted">Projekt, na kterém právě pracuji. Výsledky zatím nejsou, ukazuji návrhy.</p>
     </div>
 
-    <article class="project">
+    <article class="project" data-group="Farmers eSport">
       <div class="media">
         <img src="images/esport-manual.jpg" alt="Titulní strana brand manuálu Farmers eSport" style="width:100%;height:auto;border-radius:4px" loading="lazy">
       </div>
@@ -525,7 +533,7 @@ html.lenis,html.lenis body{height:auto}
 </footer>
 
 <dialog class="lb" aria-label="Zvětšený obrázek">
-  <div class="lb-top"><span class="lb-count"></span><button type="button" class="lb-close" aria-label="Zavřít"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg></button></div>
+  <div class="lb-top"><span class="lb-count"></span><nav class="lb-tabs" aria-label="Projekty v galerii"></nav><button type="button" class="lb-close" aria-label="Zavřít"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg></button></div>
   <div class="lb-stage"><img alt=""></div>
   <p class="lb-cap"></p>
   <div class="lb-thumbs" role="group" aria-label="Všechny obrázky"></div>
@@ -620,9 +628,9 @@ html.lenis,html.lenis body{height:auto}
 (function(){
   var dlg=document.querySelector('.lb'); if(!dlg||!dlg.showModal) return;
   var imgs=[].slice.call(document.querySelectorAll('#grafika img, #pracuji img'));
-  var thumbs=dlg.querySelector('.lb-thumbs'); var stage=dlg.querySelector('.lb-stage img'), cap=dlg.querySelector('.lb-cap'), cnt=dlg.querySelector('.lb-count'), cur=0, last=null;
+  var thumbs=dlg.querySelector('.lb-thumbs'); var tabs=dlg.querySelector('.lb-tabs'); var groups=[], gIdx=[]; var stage=dlg.querySelector('.lb-stage img'), cap=dlg.querySelector('.lb-cap'), cnt=dlg.querySelector('.lb-count'), cur=0, last=null;
   function captionOf(im){var f=im.closest('figure'); var fc=f&&f.querySelector('figcaption'); return fc?fc.textContent:im.alt;}
-  function show(i){cur=(i+imgs.length)%imgs.length; var im=imgs[cur]; stage.src=im.currentSrc||im.src; stage.alt=im.alt; cap.textContent=captionOf(im); cnt.textContent=(cur+1)+' / '+imgs.length; [].forEach.call(thumbs.children,function(b,j){b.setAttribute('aria-current',j===cur?'true':'false'); if(j===cur){thumbs.scrollTo({left:b.offsetLeft-thumbs.clientWidth/2+b.offsetWidth/2,behavior:'smooth'});}}); stage.style.animation='none'; stage.offsetHeight; stage.style.animation='';}
+  function show(i){cur=(i+imgs.length)%imgs.length; var im=imgs[cur]; stage.src=im.currentSrc||im.src; stage.alt=im.alt; cap.textContent=captionOf(im); cnt.textContent=(cur+1)+' / '+imgs.length; [].forEach.call(tabs.children,function(b,k){b.setAttribute('aria-current',k===gIdx[cur]?'true':'false'); if(k===gIdx[cur]) tabs.scrollTo({left:b.offsetLeft-12,behavior:'smooth'});}); [].forEach.call(thumbs.children,function(b,j){b.setAttribute('aria-current',j===cur?'true':'false'); if(j===cur){thumbs.scrollTo({left:b.offsetLeft-thumbs.clientWidth/2+b.offsetWidth/2,behavior:'smooth'});}}); stage.style.animation='none'; stage.offsetHeight; stage.style.animation='';}
   function open(i){last=document.activeElement; show(i); dlg.showModal(); document.documentElement.style.overflow='hidden'; if(window.__lenis) window.__lenis.stop();}
   function close(){dlg.close();}
   dlg.addEventListener('close',function(){document.documentElement.style.overflow=''; if(window.__lenis) window.__lenis.start(); if(last) last.focus();});
@@ -631,6 +639,8 @@ html.lenis,html.lenis body{height:auto}
     im.addEventListener('click',function(){open(i)});
     im.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open(i)}});
   });
+  imgs.forEach(function(im,i){var a=im.closest('[data-group]'); var g=a?a.getAttribute('data-group'):'Ostatní'; var k=groups.findIndex(function(x){return x.name===g}); if(k<0){groups.push({name:g,first:i}); k=groups.length-1;} gIdx[i]=k;});
+  groups.forEach(function(g){var b=document.createElement('button'); b.type='button'; b.textContent=g.name; b.addEventListener('click',function(){show(g.first)}); tabs.appendChild(b);});
   imgs.forEach(function(im,i){var b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label','Obrázek '+(i+1)+': '+im.alt); var ti=document.createElement('img'); ti.src=im.getAttribute('src'); ti.alt=''; ti.loading='lazy'; b.appendChild(ti); b.addEventListener('click',function(){show(i)}); thumbs.appendChild(b);});
   dlg.querySelector('.lb-close').addEventListener('click',close);
   dlg.querySelector('.lb-prev').addEventListener('click',function(){show(cur-1)});
