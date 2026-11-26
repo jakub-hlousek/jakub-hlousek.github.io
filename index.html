@@ -256,9 +256,16 @@ html.lenis,html.lenis body{height:auto}
 .links .row span{font-weight:400;font-size:14px;color:var(--muted);white-space:nowrap}
 
 /* o mně + kontakt */
-.about{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px clamp(20px,3vw,40px)}
-.about h2{grid-column:span 5}
-.about div{grid-column:7 / span 6;display:flex;flex-direction:column;gap:16px;font-size:19px;line-height:1.55}
+.about-box{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:32px clamp(20px,3vw,40px);background:var(--panel);border-radius:20px;padding:clamp(28px,5vw,64px)}
+.about-side{grid-column:span 5;display:flex;flex-direction:column;gap:28px}
+.about-facts{margin:0;display:flex;flex-direction:column;border-top:2px solid var(--ink)}
+.about-facts div{display:grid;grid-template-columns:88px minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px solid #D2D3CC}
+.about-facts dt{font-size:14px;color:var(--muted);padding-top:2px}
+.about-facts dd{margin:0;color:var(--ink);font-weight:600;line-height:1.4}
+.about-text{grid-column:7 / span 6;display:flex;flex-direction:column;gap:16px;font-size:19px;line-height:1.55}
+.about-text p:first-child{font-size:clamp(21px,2vw,25px);line-height:1.4;color:var(--ink)}
+.tool-chips{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.tool-chips li{background:#fff;border-radius:999px;padding:6px 14px;font-size:14px;font-weight:500;color:var(--ink)}
 .contact{margin-top:clamp(80px,10vw,140px);background:var(--blue);color:#fff}
 .contact .wrap{padding-top:clamp(56px,8vw,96px);padding-bottom:clamp(40px,5vw,56px)}
 .contact p{font-size:18px;max-width:30ch}
@@ -270,7 +277,7 @@ html.lenis,html.lenis body{height:auto}
 
 @media (max-width:860px){
   .media,.copy,.project.flip .media,.project.flip .copy{grid-column:1 / -1;grid-row:auto}
-  .writing > div,.about h2,.about div{grid-column:1 / -1}
+  .writing > div,.about-side,.about-text{grid-column:1 / -1}
   .intro{grid-template-columns:1fr}
 }
 @media (max-width:560px){
@@ -460,7 +467,7 @@ html.lenis,html.lenis body{height:auto}
   <section class="wrap section" id="pracuji">
     <div class="section-head">
       <h2>Na čem pracuji</h2>
-      <p class="muted">Projekt, na kterém právě pracuji. Výsledky zatím nejsou, ukazuji návrhy.</p>
+      <p class="muted">Projekty, na kterých právě pracuji.</p>
     </div>
 
     <article class="project" data-group="Farmers eSport">
@@ -560,13 +567,25 @@ html.lenis,html.lenis body{height:auto}
     </div>
   </section>
 
-  <section class="wrap section about" id="o-mne">
-    <h2>O mně</h2>
-    <div>
-      <p>Začínal jsem studiem interaktivní grafiky na VOŠ, ale víc mě to táhlo k humanitním oborům, hlavně k psychologii. Dnes studuji kariérové poradenství na ČZU.</p>
-      <p>Spojení obojího mi dává smysl: grafika a video jsou moje řemeslo, psychologie mi pomáhá pochopit, co klient opravdu potřebuje a jak oslovit lidi, pro které obsah tvořím.</p>
-      <p>Video točím a stříhám od dětství. Ve volném čase mě baví silniční cyklistika, hokej a vytrvalostní sporty.</p>
-      <p class="tools">DaVinci Resolve, Sony Vegas, Affinity, Blender 3D, HTML</p>
+  <section class="wrap section" id="o-mne">
+    <div class="about-box">
+      <div class="about-side">
+        <h2>O mně</h2>
+        <dl class="about-facts">
+          <div><dt>Studuji</dt><dd>Kariérové poradenství a vzdělávání, ČZU</dd></div>
+          <div><dt>Dříve</dt><dd>Interaktivní grafika a vizualizace, VOŠ</dd></div>
+          <div><dt>Role</dt><dd>Digitální specialista, ČZU Farmers Prague</dd></div>
+          <div><dt>Odkud</dt><dd>Ústí nad Labem a Praha</dd></div>
+        </dl>
+      </div>
+      <div class="about-text">
+        <p>Začínal jsem studiem interaktivní grafiky na VOŠ, ale víc mě to táhlo k humanitním oborům, hlavně k psychologii. Dnes studuji kariérové poradenství na ČZU.</p>
+        <p>Spojení obojího mi dává smysl: grafika a video jsou moje řemeslo, psychologie mi pomáhá pochopit, co klient opravdu potřebuje a jak oslovit lidi, pro které obsah tvořím.</p>
+        <p>Video točím a stříhám od dětství. Ve volném čase mě baví silniční cyklistika, hokej a vytrvalostní sporty.</p>
+        <ul class="tool-chips" aria-label="Nástroje">
+          <li>DaVinci Resolve</li><li>Sony Vegas</li><li>Affinity</li><li>Blender 3D</li><li>HTML</li><li>CRM Relatoo</li>
+        </ul>
+      </div>
     </div>
   </section>
 </main>
