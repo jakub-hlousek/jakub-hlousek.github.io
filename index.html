@@ -29,7 +29,7 @@
   --gut:clamp(20px,4vw,48px);
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:84px}
 body{margin:0;background:var(--paper);color:var(--text);font-family:'Archivo',system-ui,sans-serif;font-variation-settings:'wdth' 100;font-size:17px;line-height:1.6}
 img{display:block;max-width:100%}
 a{color:var(--blue);text-underline-offset:.2em;text-decoration-thickness:1px}
@@ -44,11 +44,16 @@ p{margin:0}
 .small{font-size:15px}
 
 /* navigace */
-.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-top:24px;padding-bottom:24px;font-size:15px}
-.nav b{color:var(--ink);font-weight:700}
-.nav ul{display:flex;gap:clamp(14px,3vw,32px);list-style:none;margin:0;padding:0}
-.nav a{color:var(--ink);text-decoration:none}
-.nav a:hover{color:var(--blue)}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.86);-webkit-backdrop-filter:saturate(1.4) blur(12px);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid transparent;transition:border-color .2s}
+.topbar.scrolled{border-bottom-color:var(--line)}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px 16px;padding-top:14px;padding-bottom:14px}
+.brand{display:inline-flex;align-items:center;gap:10px;color:var(--ink);font-weight:700;font-size:15px;text-decoration:none;white-space:nowrap}
+.brand:hover{color:var(--ink)}
+.brand i{width:10px;height:10px;border-radius:50%;background:var(--blue)}
+.nav ul{display:flex;gap:2px;list-style:none;margin:0;padding:4px;background:var(--panel);border-radius:999px}
+.nav ul a{display:block;padding:8px 14px;border-radius:999px;color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;white-space:nowrap;transition:background-color .15s,color .15s}
+.nav ul a:hover{background:#fff;color:var(--ink)}
+.nav ul a.active{background:var(--blue);color:#fff}
 
 /* úvod */
 .hero{padding-top:clamp(24px,6vw,72px);padding-bottom:clamp(56px,9vw,120px)}
@@ -147,7 +152,11 @@ figcaption{font-size:14px;color:var(--muted);padding-top:8px}
   .intro{grid-template-columns:1fr}
 }
 @media (max-width:560px){
-  .nav ul{display:none}
+  .nav{flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+  .nav nav{width:100%;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
+  .nav nav::-webkit-scrollbar{display:none}
+  .nav ul{width:max-content}
+  .nav ul a{padding:7px 12px}
   .hero-grid{grid-template-columns:1fr}
   .portrait{width:120px;margin:8px 8px 24px;order:-1}
   .name{font-size:17vw}
@@ -157,19 +166,21 @@ figcaption{font-size:14px;color:var(--muted);padding-top:8px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
-<body>
+<body id="top">
 
-<header class="wrap nav">
-  <b>Jakub Hloušek</b>
+<header class="topbar">
+<div class="wrap nav">
+  <a class="brand" href="#top"><i aria-hidden="true"></i>Jakub Hloušek</a>
   <nav aria-label="Hlavní navigace">
     <ul>
       <li><a href="#video">Video</a></li>
       <li><a href="#grafika">Grafika</a></li>
-      <li><a href="#rozpracovano">Rozpracováno</a></li>
+      <li><a href="#pracuji">Na čem pracuji</a></li>
       <li><a href="#psani">Web a psaní</a></li>
       <li><a href="#kontakt">Kontakt</a></li>
     </ul>
   </nav>
+</div>
 </header>
 
 <main>
@@ -297,9 +308,9 @@ figcaption{font-size:14px;color:var(--muted);padding-top:8px}
     </article>
   </section>
 
-  <section class="wrap section" id="rozpracovano">
+  <section class="wrap section" id="pracuji">
     <div class="section-head">
-      <h2>Rozpracováno</h2>
+      <h2>Na čem pracuji</h2>
       <p class="muted">Projekt, na kterém právě pracuji. Výsledky zatím nejsou, ukazuji návrhy.</p>
     </div>
 
@@ -393,5 +404,19 @@ figcaption{font-size:14px;color:var(--muted);padding-top:8px}
   </div>
 </footer>
 
+<script>
+(function(){
+  var bar=document.querySelector('.topbar');
+  function onScroll(){bar.classList.toggle('scrolled',window.scrollY>8)}
+  onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
+  var links=[].slice.call(document.querySelectorAll('.nav ul a'));
+  if(!('IntersectionObserver' in window)) return;
+  var map={}; links.forEach(function(a){var el=document.querySelector(a.getAttribute('href')); if(el) map[el.id]=a;});
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ links.forEach(function(a){a.classList.remove('active');a.removeAttribute('aria-current')}); var a=map[e.target.id]; if(a){a.classList.add('active');a.setAttribute('aria-current','true'); var nv=a.closest('nav'); if(nv.scrollWidth>nv.clientWidth){nv.scrollTo({left:Math.max(0,a.offsetLeft-24),behavior:'smooth'});}} } });
+  },{rootMargin:'-45% 0px -50% 0px'});
+  Object.keys(map).forEach(function(id){io.observe(document.getElementById(id))});
+})();
+</script>
 </body>
 </html>
