@@ -168,6 +168,17 @@ html.lenis,html.lenis body{height:auto}
 /* zvětšení obrázků */
 .zoomable{cursor:zoom-in}
 .zoomable:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+.zoomable{transition:filter .35s ease,scale .7s cubic-bezier(.2,.8,.2,1)}
+.zhost{position:relative}
+.zhost::after{content:"";position:absolute;top:12px;right:12px;width:42px;height:42px;border-radius:50%;background:var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5L20 20M10.5 7.5v6M7.5 10.5h6'/%3E%3C/svg%3E") center/20px no-repeat;opacity:0;transform:scale(.6);transition:opacity .25s ease,transform .35s cubic-bezier(.2,.8,.2,1);pointer-events:none;z-index:2}
+@media (hover:hover){
+  .zhost:hover::after{opacity:1;transform:none}
+  .zhost:hover .zoomable{filter:brightness(.93)}
+  .frame:hover .zoomable,.poster:hover .zoomable{scale:1.03}
+}
+.zhost:focus-within::after{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.zoomable,.zhost::after{transition:none}.frame:hover .zoomable,.poster:hover .zoomable{scale:none}}
+
 .lb{position:fixed;inset:0;z-index:60;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:rgba(10,10,12,.97);color:#fff;display:none}
 .lb[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;animation:lbin .25s ease}
 .lb::backdrop{background:transparent}
@@ -643,7 +654,7 @@ html.lenis,html.lenis body{height:auto}
     else window.scrollTo({top:Math.max(0,y),behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
   });
   imgs.forEach(function(im,i){
-    im.classList.add('zoomable'); im.tabIndex=0; im.setAttribute('role','button'); im.setAttribute('aria-label','Zvětšit: '+im.alt);
+    im.classList.add('zoomable'); im.parentElement.classList.add('zhost'); im.tabIndex=0; im.setAttribute('role','button'); im.setAttribute('aria-label','Zvětšit: '+im.alt);
     im.addEventListener('click',function(){open(i)});
     im.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open(i)}});
   });
