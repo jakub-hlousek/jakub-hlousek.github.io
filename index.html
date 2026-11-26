@@ -216,10 +216,14 @@ html.lenis,html.lenis body{height:auto}
 .rail{display:none}
 @media (min-width:1400px){
   .rail{display:block;position:fixed;top:0;bottom:0;z-index:15;pointer-events:none}
-  .rail-l{left:28px;width:2px;background:var(--line)}
-  .rail-l i{position:absolute;left:0;top:0;width:2px;height:100%;background:var(--blue);transform-origin:top;transform:scaleY(0)}
-  .rail-l::before,.rail-l::after{content:"";position:absolute;left:-5px;width:12px;height:2px;background:var(--blue)}
-  .rail-l::before{top:96px}.rail-l::after{bottom:32px}
+  .rail-l{left:24px;width:auto;display:flex;align-items:center;pointer-events:none}
+  .rail-l ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;pointer-events:auto}
+  .rail-l a{position:relative;display:block;height:14px;width:48px;text-decoration:none}
+  .rail-l a::before{content:"";position:absolute;left:0;top:6px;height:2px;width:16px;background:#B9BAB3;transition:width .35s cubic-bezier(.2,.8,.2,1),background-color .25s}
+  .rail-l a:hover::before{width:28px;background:var(--ink)}
+  .rail-l a.on::before{width:40px;background:var(--blue)}
+  .rail-l a span{position:absolute;left:52px;top:-3px;white-space:nowrap;font-size:13px;font-weight:600;color:var(--ink);background:#fff;padding:2px 8px;border-radius:999px;opacity:0;transform:translateX(-6px);transition:opacity .2s,transform .25s;pointer-events:none}
+  .rail-l a:hover span,.rail-l a:focus-visible span{opacity:1;transform:none}
   .rail-r{right:28px;width:24px;display:flex;align-items:center;justify-content:center}
   .rail-r span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--ink);display:flex;align-items:center;gap:14px;white-space:nowrap}
   .rail-r span::before{content:"";width:2px;height:40px;background:var(--blue)}
@@ -318,7 +322,17 @@ html.lenis,html.lenis body{height:auto}
 </head>
 <body id="top">
 
-<div class="rail rail-l" aria-hidden="true"><i></i></div>
+<nav class="rail rail-l" aria-label="Mapa stránky">
+  <ol>
+    <li><a href="#top" data-sec="Úvod"><span>Úvod</span></a></li>
+    <li><a href="#video" data-sec="Video"><span>Video</span></a></li>
+    <li><a href="#grafika" data-sec="Grafika"><span>Grafika</span></a></li>
+    <li><a href="#pracuji" data-sec="Na čem pracuji"><span>Na čem pracuji</span></a></li>
+    <li><a href="#psani" data-sec="Web a psaní"><span>Web a psaní</span></a></li>
+    <li><a href="#o-mne" data-sec="O mně"><span>O mně</span></a></li>
+    <li><a href="#kontakt" data-sec="Kontakt"><span>Kontakt</span></a></li>
+  </ol>
+</nav>
 <div class="rail rail-r" aria-hidden="true"><span><b>Jakub Hloušek</b><em style="font-style:normal" class="rail-sec">Úvod</em></span></div>
 <header class="topbar">
 <div class="wrap nav">
@@ -783,11 +797,11 @@ html.lenis,html.lenis body{height:auto}
 </script>
 <script>
 (function(){
-  var bar=document.querySelector('.rail-l i'), lab=document.querySelector('.rail-sec'); if(!bar||!lab) return;
+  var dots=[].slice.call(document.querySelectorAll('.rail-l a')), lab=document.querySelector('.rail-sec'); if(!lab) return;
   var tick=false;
   function upd(){
-    var h=document.documentElement.scrollHeight-innerHeight; bar.style.transform='scaleY('+(h>0?Math.min(1,scrollY/h):0).toFixed(4)+')';
-    var a=document.querySelector('.nav ul a.active'); var txt=(a&&scrollY>innerHeight*.4)?a.textContent:'Úvod'; if(lab.textContent!==txt) lab.textContent=txt;
+    
+    var a=document.querySelector('.nav ul a.active'); var txt=(a&&scrollY>innerHeight*.4)?a.textContent:'Úvod'; if(lab.textContent!==txt) lab.textContent=txt; dots.forEach(function(d){var on=d.getAttribute('data-sec')===txt; d.classList.toggle('on',on); if(on) d.setAttribute('aria-current','true'); else d.removeAttribute('aria-current');});
     tick=false;
   }
   addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(upd)}},{passive:true}); addEventListener('resize',upd); upd(); var nv=document.querySelector('.nav ul'); if(nv&&window.MutationObserver) new MutationObserver(function(){upd()}).observe(nv,{subtree:true,attributes:true,attributeFilter:['class']});
