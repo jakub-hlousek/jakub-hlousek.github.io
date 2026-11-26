@@ -169,19 +169,28 @@ html.lenis,html.lenis body{height:auto}
 .zoomable{cursor:zoom-in}
 .zoomable:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
 .lb{position:fixed;inset:0;z-index:60;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:0;border:0;background:rgba(10,10,12,.97);color:#fff;display:none}
-.lb[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto;animation:lbin .25s ease}
+.lb[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;animation:lbin .25s ease}
 .lb::backdrop{background:transparent}
 @keyframes lbin{from{opacity:0}to{opacity:1}}
 .lb-top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px var(--gut);font-size:14px;color:#d8d8d8}
 .lb-stage{display:grid;place-items:center;min-height:0;padding:0 clamp(12px,6vw,96px)}
-.lb-stage img{max-width:100%;max-height:calc(100vh - 150px);max-height:calc(100dvh - 150px);width:auto;height:auto;object-fit:contain;border-radius:4px;animation:lbimg .3s cubic-bezier(.2,.8,.2,1)}
+.lb-stage img{max-width:100%;max-height:calc(100vh - 250px);max-height:calc(100dvh - 250px);width:auto;height:auto;object-fit:contain;border-radius:4px;animation:lbimg .3s cubic-bezier(.2,.8,.2,1)}
 @keyframes lbimg{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
-.lb-cap{padding:14px var(--gut) 22px;text-align:center;font-size:15px;color:#e6e6e6;min-height:1.6em}
+.lb-cap{padding:12px var(--gut) 10px;text-align:center;font-size:15px;color:#e6e6e6;min-height:1.6em}
 .lb button{font:inherit;color:#fff;background:rgba(255,255,255,.1);border:0;border-radius:999px;min-width:48px;min-height:48px;display:inline-grid;place-items:center;cursor:pointer;transition:background-color .15s}
 .lb button:hover{background:var(--blue)}
 .lb-nav{position:absolute;top:50%;transform:translateY(-50%)}
 .lb-prev{left:clamp(8px,2vw,24px)}.lb-next{right:clamp(8px,2vw,24px)}
 @media (max-width:560px){.lb-nav{top:auto;bottom:64px;transform:none}}
+.lb-thumbs{display:flex;gap:8px;overflow-x:auto;padding:4px var(--gut) 20px;scrollbar-width:none;justify-content:safe center}
+.lb-thumbs::-webkit-scrollbar{display:none}
+.lb .lb-thumbs button{flex:none;width:72px;height:72px;min-width:0;min-height:0;padding:0;border-radius:8px;overflow:hidden;background:#222;opacity:.45;outline:2px solid transparent;outline-offset:2px;transition:opacity .2s,outline-color .2s}
+.lb .lb-thumbs button:hover{opacity:.85;background:#222}
+.lb .lb-thumbs button[aria-current="true"]{opacity:1;outline-color:var(--blue)}
+.lb-thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.lb .lb-nav{width:56px;height:56px;background:rgba(255,255,255,.14)}
+@media (max-width:560px){.lb .lb-thumbs button{width:56px;height:56px}.lb-nav{bottom:118px}}
+
 @media (prefers-reduced-motion:reduce){.lb[open],.lb-stage img{animation:none}}
 
 /* kontaktní panel */
@@ -519,6 +528,7 @@ html.lenis,html.lenis body{height:auto}
   <div class="lb-top"><span class="lb-count"></span><button type="button" class="lb-close" aria-label="Zavřít"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg></button></div>
   <div class="lb-stage"><img alt=""></div>
   <p class="lb-cap"></p>
+  <div class="lb-thumbs" role="group" aria-label="Všechny obrázky"></div>
   <button type="button" class="lb-nav lb-prev" aria-label="Předchozí obrázek"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   <button type="button" class="lb-nav lb-next" aria-label="Další obrázek"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
 </dialog>
@@ -610,9 +620,9 @@ html.lenis,html.lenis body{height:auto}
 (function(){
   var dlg=document.querySelector('.lb'); if(!dlg||!dlg.showModal) return;
   var imgs=[].slice.call(document.querySelectorAll('#grafika img, #pracuji img'));
-  var stage=dlg.querySelector('.lb-stage img'), cap=dlg.querySelector('.lb-cap'), cnt=dlg.querySelector('.lb-count'), cur=0, last=null;
+  var thumbs=dlg.querySelector('.lb-thumbs'); var stage=dlg.querySelector('.lb-stage img'), cap=dlg.querySelector('.lb-cap'), cnt=dlg.querySelector('.lb-count'), cur=0, last=null;
   function captionOf(im){var f=im.closest('figure'); var fc=f&&f.querySelector('figcaption'); return fc?fc.textContent:im.alt;}
-  function show(i){cur=(i+imgs.length)%imgs.length; var im=imgs[cur]; stage.src=im.currentSrc||im.src; stage.alt=im.alt; cap.textContent=captionOf(im); cnt.textContent=(cur+1)+' / '+imgs.length; stage.style.animation='none'; stage.offsetHeight; stage.style.animation='';}
+  function show(i){cur=(i+imgs.length)%imgs.length; var im=imgs[cur]; stage.src=im.currentSrc||im.src; stage.alt=im.alt; cap.textContent=captionOf(im); cnt.textContent=(cur+1)+' / '+imgs.length; [].forEach.call(thumbs.children,function(b,j){b.setAttribute('aria-current',j===cur?'true':'false'); if(j===cur){thumbs.scrollTo({left:b.offsetLeft-thumbs.clientWidth/2+b.offsetWidth/2,behavior:'smooth'});}}); stage.style.animation='none'; stage.offsetHeight; stage.style.animation='';}
   function open(i){last=document.activeElement; show(i); dlg.showModal(); document.documentElement.style.overflow='hidden'; if(window.__lenis) window.__lenis.stop();}
   function close(){dlg.close();}
   dlg.addEventListener('close',function(){document.documentElement.style.overflow=''; if(window.__lenis) window.__lenis.start(); if(last) last.focus();});
@@ -621,6 +631,7 @@ html.lenis,html.lenis body{height:auto}
     im.addEventListener('click',function(){open(i)});
     im.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open(i)}});
   });
+  imgs.forEach(function(im,i){var b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label','Obrázek '+(i+1)+': '+im.alt); var ti=document.createElement('img'); ti.src=im.getAttribute('src'); ti.alt=''; ti.loading='lazy'; b.appendChild(ti); b.addEventListener('click',function(){show(i)}); thumbs.appendChild(b);});
   dlg.querySelector('.lb-close').addEventListener('click',close);
   dlg.querySelector('.lb-prev').addEventListener('click',function(){show(cur-1)});
   dlg.querySelector('.lb-next').addEventListener('click',function(){show(cur+1)});
