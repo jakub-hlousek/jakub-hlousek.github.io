@@ -142,6 +142,7 @@ figcaption{font-size:14px;color:var(--muted);padding-top:8px}
 .marquee span{flex:none;font-weight:800;font-variation-settings:'wdth' 125;letter-spacing:-.02em;font-size:clamp(26px,4vw,52px);line-height:1;padding-right:.6em;white-space:nowrap}
 .marquee span b{font-weight:800;color:transparent;-webkit-text-stroke:1.5px #fff}
 .marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-mid{margin-top:clamp(64px,9vw,128px)}
 @keyframes marquee{to{transform:translateX(-50%)}}
 
 .js .name .line{display:block;overflow:hidden;padding-top:.1em;margin-top:-.1em;padding-bottom:.04em}
@@ -647,6 +648,12 @@ html.lenis,html.lenis body{height:auto}
       </div>
     </div>
   </section>
+
+  <div class="marquee marquee-mid" aria-hidden="true">
+    <div class="marquee-track">
+      <span>Střih videa <b>Grafika</b> Web <b>Články</b></span><span>Střih videa <b>Grafika</b> Web <b>Články</b></span><span>Střih videa <b>Grafika</b> Web <b>Články</b></span><span>Střih videa <b>Grafika</b> Web <b>Články</b></span>
+    </div>
+  </div>
 
   <section class="wrap section" id="o-mne">
     <div class="about-box">
